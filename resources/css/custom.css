@@ -1,0 +1,11 @@
+.card {
+    @apply bg-base-100 rounded-box border-[length:var(--border)] border-neutral
+}
+
+.card-field {
+    @apply bg-base-100 rounded-field border-[length:var(--border)] border-neutral
+}
+
+.card-selector {
+    @apply bg-base-100 rounded-selector border-[length:var(--border)] border-neutral
+}

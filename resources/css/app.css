@@ -1,0 +1,41 @@
+@import 'tailwindcss';
+
+@source '../views';
+@source '../livewire';
+@source '../../app/Livewire/*.php';
+@source '../../app/View/Components/*.php';
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+
+/** daisyUI */
+@plugin "daisyui" {
+    themes: false;
+}
+
+/* Use a custom theme, values are set in ThemeStyles.php */
+@plugin "daisyui/theme" {
+    name: "custom";
+    default: true;
+    prefersdark: false;
+    color-scheme: light;
+}
+
+/* maryUI */
+@source "../../vendor/robsontenorio/mary/src/View/Components/**/*.php";
+
+/* Theme toggle */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/**
+* Paginator - Traditional style
+* Because Laravel defaults does not match well the design of daisyUI.
+*/
+
+.mary-table-pagination span[aria-current="page"]>span {
+    @apply bg-primary text-base-100
+}
+
+.mary-table-pagination button {
+    @apply cursor-pointer
+}
+
+@import './custom.css';

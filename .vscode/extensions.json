@@ -1,0 +1,15 @@
+{
+    "recommendations": [
+        "open-southeners.laravel-pint", // Laravel Pint (formatting)
+        "eamodio.gitlens", // GitLens (better git integration)
+        "laravel.vscode-laravel", // Official Laravel Extension
+        "shufo.vscode-blade-formatter", // Laravel Blade formatter (formatting)
+        "onecentlin.laravel-blade", // Laravel Blade Snippets (suggestions)
+        "MrChetan.goto-laravel-components", // Laravel Goto components (links to components)
+        "MrChetan.laravel-goto-config", // Laravel Goto components (links to configs)
+        "codingyu.laravel-goto-view", // Laravel Goto components (links to views)
+        "porifa.laravel-intelephense", // Laravel Intelephense (language support for laravel)
+        "bmewburn.vscode-intelephense-client", // PHP Intelephense (language support for php)
+        "bradlc.vscode-tailwindcss" // Tailwind CSS IntelliSense (language support for tailwind)
+    ]
+}
