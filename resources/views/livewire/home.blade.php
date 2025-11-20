@@ -5,12 +5,6 @@
 
         Hier werden die Anweisungen für die Aufgabenstellung stehen.
 
+        <x-button :label="session('test-run') ? 'Testlauf fortsetzen' : 'Testlauf starten'" class="btn-primary mt-6" wire:click="start" />
     </div>
-
-    {{-- Right side content --}}
-    <x-slot:right>
-        <div class="card px-4 py-2">
-            Optional kann hier auch etwas angezeigt werden.
-        </div>
-    </x-slot:right>
 </x-container>

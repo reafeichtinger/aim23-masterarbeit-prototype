@@ -20,6 +20,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     {{-- Vite --}}
+    @livewireStyles
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     {{-- Custom daisy-ui theme --}}
@@ -40,5 +41,6 @@
 </body>
 
 @stack('scripts')
+@livewireScriptConfig
 
 </html>

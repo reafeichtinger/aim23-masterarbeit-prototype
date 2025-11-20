@@ -26,7 +26,6 @@ class Logo extends Component
                     {{-- Hidden when collapsed --}}
                     <div {{ $attributes->class(["hidden-when-collapsed p-2.5 md:p-5.5"]) }}>
                         <div class="flex items-center gap-2 w-fit">
-                            <x-icon name="o-pencil-square" class="w-6 text-primary" />
                             <span class="font-bold text-3xl me-3 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent ">
                                 {{ explode('-', config('app.name'))[0] ?? '' }}
                             </span>

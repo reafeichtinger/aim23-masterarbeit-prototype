@@ -13,7 +13,9 @@
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",
         "livewire/livewire": "^3.6",
-        "robsontenorio/mary": "^2.4"
+        "reafeichtinger/laravel-enums-plus": "^3.2",
+        "robsontenorio/mary": "^2.4",
+        "vinkla/hashids": "^13.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.16",
