@@ -19,7 +19,7 @@ class SaveTestRunAction
         $testRun->completed_at = $data->completed_at;
         $testRun->save();
 
-        Session::put('test-run', $testRun->hash);
+        Session::put('test-run.hash', $testRun->hash);
         Session::save();
 
         return $testRun;

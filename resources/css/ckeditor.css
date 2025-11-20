@@ -1,0 +1,16 @@
+:root {
+    --ck-border-radius: var(--radius-field) !important;
+    --ck-content-font-size: 12pt !important;
+}
+
+.ck.ck-toolbar {
+    @apply !border-[length:var(--border)] !border-neutral !bg-base-200
+}
+
+.ck.ck-editor__editable_inline {
+    @apply !border !border-neutral !rounded-none
+}
+
+.ck.ck-editor__editable.ck-focused {
+    @apply !ring !ring-[var(--ck-color-focus-border)]
+}

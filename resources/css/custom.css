@@ -9,7 +9,3 @@
 .card-selector {
     @apply bg-base-100 rounded-selector border-[length:var(--border)] border-neutral
 }
-
-div.ck.ck-toolbar {
-    @apply !border-[length:var(--border)] !border-b-0 !border-neutral !rounded-t-field
-}

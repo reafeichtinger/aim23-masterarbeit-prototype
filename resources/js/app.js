@@ -41,4 +41,6 @@ document.addEventListener('alpine:init', () => {
     }));
 });
 
-Livewire.start()
+Livewire.start();
+
+import 'ckeditor5-livewire';

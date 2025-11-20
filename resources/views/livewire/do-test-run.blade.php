@@ -14,16 +14,19 @@
 
         {{-- TODO: Load current task info --}}
 
-        @switch($this->testRun->currentEditor)
-            @case(App\Enums\EditorEnum::GRAPESJS)
-                {{-- GrapesJS Editor --}}
-                <x-grapesjs />
-            @break
+        <div>
+            @switch($this->testRun->currentEditor)
+                @case(App\Enums\EditorEnum::GRAPESJS)
+                    {{-- GrapesJS Editor --}}
+                    <x-grapesjs />
+                @break
 
-            @default
-                {{-- CKEditor 5 --}}
-                <x-ckeditor name="document" :value="$this->content" wire:model="content" />
-        @endswitch
+                @default
+                    {{-- CKEditor 5 --}}
+                    <x-ckeditor5-assets />
+                    <x-ckeditor :content="$this->content" />
+            @endswitch
+        </div>
 
         {{-- Actions --}}
         <div
@@ -31,8 +34,8 @@
 
             <div>
                 {{-- Delete TestRun button --}}
-                <x-button wire:click="deleteTestRun" class="btn-error btn-soft btn-sm" icon="o-trash"
-                    label="Testlauf abbrechen" />
+                <x-button x-on:click="$wire.set('showDeleteConfirmation', true)" class="btn-error btn-soft btn-sm"
+                    icon="o-trash" label="Testlauf abbrechen" />
             </div>
 
             <div class="space-x-2">
@@ -48,5 +51,20 @@
             </div>
         </div>
     </div>
+
+    {{-- Delete confirmation --}}
+    <x-modal wire:model="showDeleteConfirmation" title="Sind Sie sicher?" class="backdrop-blur" box-class="min-w-2xl">
+        Wenn du deinen Testlauf abbrichst werden alle zugeordneten Daten gelöscht und Sie verlieren Ihren Fortschritt.
+        Dies kann nicht rückgängig gemacht werden.
+
+        <x-slot:actions>
+            <div
+                class="bg-base-200 flex-1 flex flex-row items-center justify-end space-x-3 -mx-6 -mb-6 p-2 border-t-[length:var(--border)] border-neutral">
+                <x-button label="Schließen" x-on:click="$wire.set('showDeleteConfirmation', false)"
+                    class="btn-neutral" />
+                <x-button wire:click="deleteTestRun" class="btn-error" icon="o-trash" label="Testlauf abbrechen" />
+            </div>
+        </x-slot:actions>
+    </x-modal>
 
 </x-container>

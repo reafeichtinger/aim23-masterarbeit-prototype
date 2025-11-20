@@ -4,7 +4,7 @@
         // Load current test run and get progress
         $testRun = App\Models\TestRun::where(
             'id',
-            Vinkla\Hashids\Facades\Hashids::decode(session('test-run') ?? '')[0] ?? 0,
+            Vinkla\Hashids\Facades\Hashids::decode(session('test-run.hash') ?? '')[0] ?? 0,
         )
             ->with('tasks')
             ->first();

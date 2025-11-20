@@ -43,5 +43,13 @@ enum EditorEnum: string implements EnumPlus
         };
     }
 
+    public function defaultContent(): string|array
+    {
+        return match ($this) {
+            self::CKEDITOR => '',
+            self::GRAPESJS => [],
+        };
+    }
+
     #endregion Helpers
 }

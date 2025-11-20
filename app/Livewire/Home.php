@@ -16,7 +16,7 @@ class Home extends Component
 {
     public function start(): mixed
     {
-        if ($testRun = TestRun::where('id', Hashids::decode(Session::get('test-run') ?? '')[0] ?? 0)->with('tasks')->first()) {
+        if ($testRun = TestRun::where('id', Hashids::decode(Session::get('test-run.hash') ?? '')[0] ?? 0)->with('tasks')->first()) {
             $currentEditor = $testRun?->getNumberFromEditor($testRun->currentEditor);
             $currentStep = $testRun?->currentStep;
             $this->redirectRoute('test-run', ['testRun' => $testRun->hash, 'editor' => $currentEditor, 'step' => $currentStep], navigate: true);

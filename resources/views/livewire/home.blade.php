@@ -5,6 +5,6 @@
 
         Hier werden die Anweisungen für die Aufgabenstellung stehen.
 
-        <x-button :label="session('test-run') ? 'Testlauf fortsetzen' : 'Testlauf starten'" class="btn-primary mt-6" wire:click="start" />
+        <x-button :label="session('test-run.hash') ? 'Testlauf fortsetzen' : 'Testlauf starten'" class="btn-primary mt-6" wire:click="start" />
     </div>
 </x-container>

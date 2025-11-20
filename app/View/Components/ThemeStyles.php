@@ -28,8 +28,8 @@ class ThemeStyles extends Component
                         --color-neutral: oklch(92.8% 0.006 264.531); {{-- gray-200 --}}
                         --color-neutral-content: oklch(13% 0.028 261.692); {{-- gray-950 --}}
                         --color-base-100: oklch(1 0 255); {{-- White --}}
-                        --color-base-200: oklch(98.4% 0.003 247.858); {{-- slate-50 --}}
-                        --color-base-300: oklch(92.9% 0.013 255.508); {{-- slate-200 --}}
+                        --color-base-200: oklch(98.5% 0 0); {{-- zinc-50 --}}
+                        --color-base-300: oklch(92% 0.004 286.32); {{-- zinc-200 --}}
                         --color-base-content: oklch(12.9% 0.042 264.695); {{-- slate-950 --}}
                         --color-info: oklch(54.6% 0.245 262.881); {{-- blue-600 --}}
                         --color-info-content:  oklch(97% 0.014 254.604); {{-- blue-50 --}}

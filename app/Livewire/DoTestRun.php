@@ -6,8 +6,11 @@ use App\Actions\TestRun\DeleteTestRunAction;
 use App\Enums\EditorEnum;
 use App\Models\Task;
 use App\Models\TestRun;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Session;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Locked;
+use Livewire\Attributes\On;
 use Vinkla\Hashids\Facades\Hashids;
 
 class DoTestRun extends Component
@@ -16,27 +19,31 @@ class DoTestRun extends Component
     public ?int $testRunId = null;
 
     #[Locked]
-    public ?int $editor = null;
+    public null|int|string $editor = null;
 
     #[Locked]
-    public ?int $step = null;
+    public null|int|string $step = null;
 
     public null|string|array $content = null;
+    public bool $showDeleteConfirmation = false;
 
     #region Livewire
 
-    public function mount(string $testRun, int $editor, int $step): void
+    public function mount(string $testRun, int|string $editor, int|string $step): void
     {
         $this->testRunId = Hashids::decode($testRun)[0] ?? 0;
-        $this->editor = $editor;
-        $this->step = $step;
+        $this->editor = (int) $editor;
+        $this->step = (int) $step;
 
         // Abort if not a valid editor or step number
         if ($this->editor > 2 || $this->step > 5) {
             abort(404);
         }
 
-        $this->content = $this->currentTask->content;
+        // Load the editor content
+        $this->content = Session::get("test-run.editor-{$this->editor}.step-{$this->step}.content",
+            default: $this->currentTask?->content ?? $this->testRun->currentEditor->defaultContent()
+        );
     }
 
     #endregion Livewire
@@ -93,4 +100,16 @@ class DoTestRun extends Component
     }
 
     #endregion Actions
+    #region Listeners
+
+    #[On('editor-content-changed')]
+    public function onEditorContentChanged(string $editorId, array $content): void
+    {
+        $this->content = Arr::get($content, 'main');
+
+        Session::put("test-run.editor-{$this->editor}.step-{$this->step}.content", $this->content);
+        Session::save();
+    }
+
+    #endregion Listeners
 }
