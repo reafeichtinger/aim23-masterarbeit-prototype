@@ -257,20 +257,24 @@
                     });
                 })
                 .catch(e => console.error(e));
+        }, {
+            once: true
         });
 
+        // Clean up editor instance and timeouts when navigating away
         document.addEventListener('livewire:navigate', () => {
-            console.log("Destroying editor:");
-            console.log(window.ckeditor);
+            // Make sure final data is saved before destroying and clear timeout
+            clearTimeout(inputDelay);
+            $wire.set('ckeditorContent', window.ckeditor.getData());
+
+            // Destroy the editor instance
             window.ckeditor?.destroy().then(() => {
-                clearTimeout(inputDelay);
                 window.ckeditor = undefined;
-                console.log("Destroyed editor:");
-                console.log(window.ckeditor);
             }).catch(error => {
                 console.error(error);
             });
-
+        }, {
+            once: true
         });
     </script>
 @endscript
