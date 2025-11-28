@@ -41,6 +41,12 @@ document.addEventListener('alpine:init', () => {
     }));
 });
 
-Livewire.start();
+window.debounce = (func, wait) => {
+    let timeout;
+    return (...args) => {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), wait);
+    };
+};
 
-import 'ckeditor5-livewire';
+Livewire.start();

@@ -102,14 +102,20 @@ class DoTestRun extends Component
     #endregion Actions
     #region Listeners
 
-    #[On('editor-content-changed')]
-    public function onEditorContentChanged(string $editorId, array $content): void
+    public function updatedContent(mixed $val): void
     {
-        $this->content = Arr::get($content, 'main');
-
         Session::put("test-run.editor-{$this->editor}.step-{$this->step}.content", $this->content);
         Session::save();
     }
+
+    // #[On('editor-content-changed')]
+    // public function onEditorContentChanged(string $editorId, array $content): void
+    // {
+    //     $this->content = Arr::get($content, 'main');
+
+    //     Session::put("test-run.editor-{$this->editor}.step-{$this->step}.content", $this->content);
+    //     Session::save();
+    // }
 
     #endregion Listeners
 }

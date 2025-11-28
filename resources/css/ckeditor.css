@@ -4,7 +4,7 @@
 }
 
 .ck.ck-toolbar {
-    @apply !border-[length:var(--border)] !border-neutral !bg-base-200
+    @apply !border-none !bg-base-200
 }
 
 .ck.ck-editor__editable_inline {
@@ -13,4 +13,12 @@
 
 .ck.ck-editor__editable.ck-focused {
     @apply !ring !ring-[var(--ck-color-focus-border)]
+}
+
+.ck.ck-menu-bar {
+    @apply rounded-t-field bg-white !border-neutral !bg-base-200
+}
+
+.ck.ck-menu-bar__menu__button {
+    @apply !bg-base-200 hover:bg-base-300!
 }

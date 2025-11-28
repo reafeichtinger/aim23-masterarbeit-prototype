@@ -23,14 +23,15 @@
 
                 @default
                     {{-- CKEditor 5 --}}
-                    <x-ckeditor5-assets />
-                    <x-ckeditor :content="$this->content" />
+                    {{-- <x-ckeditor5-assets /> --}}
+                    <livewire:components.ckeditor5 wire:model.live="content" :name="$this->editor . '_' . $this->step" />
+                    {{-- <x-ckeditor5 :content="$this->content" /> --}}
             @endswitch
         </div>
 
         {{-- Actions --}}
         <div
-            class="border-t-[length:var(--border)] border-neutral px-4 py-2 -mx-6 -mb-4 bg-base-200/50 rounded-b-box flex flex-row justify-between items-center">
+            class="border-t-(length:--border) border-neutral px-4 py-2 -mx-6 -mb-4 bg-base-200/50 rounded-b-box flex flex-row justify-between items-center">
 
             <div>
                 {{-- Delete TestRun button --}}
