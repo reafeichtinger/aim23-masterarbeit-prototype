@@ -47,7 +47,11 @@ enum EditorEnum: string implements EnumPlus
     {
         return match ($this) {
             self::CKEDITOR => '',
-            self::GRAPESJS => [],
+            self::GRAPESJS => json_encode([
+                'pages' => [
+                    ['name' => 'Home', 'component' => ''],
+                ],
+            ]),
         };
     }
 

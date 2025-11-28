@@ -18,14 +18,12 @@
             @switch($this->testRun->currentEditor)
                 @case(App\Enums\EditorEnum::GRAPESJS)
                     {{-- GrapesJS Editor --}}
-                    <x-grapesjs />
+                    <livewire:components.grapesjs wire:model.live="content" :name="$this->editor . '_' . $this->step" />
                 @break
 
                 @default
                     {{-- CKEditor 5 --}}
-                    {{-- <x-ckeditor5-assets /> --}}
                     <livewire:components.ckeditor5 wire:model.live="content" :name="$this->editor . '_' . $this->step" />
-                    {{-- <x-ckeditor5 :content="$this->content" /> --}}
             @endswitch
         </div>
 
