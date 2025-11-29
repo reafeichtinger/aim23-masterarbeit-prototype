@@ -27,16 +27,18 @@ document.addEventListener('alpine:init', () => {
             this.now = new Date().getTime();
             this.difference = this.expires - this.now;
 
-            this.minutes = String(Math.abs(Math.ceil((this.difference % (1000 * 60 * 60)) / (1000 * 60)))).padStart(2, '0');
-            this.seconds = String(Math.abs(Math.ceil((this.difference % (1000 * 60)) / 1000))).padStart(2, '0');
-
             if (this.difference == 0) {
                 clearInterval(this.countdown);
-                // this.days = '00';
-                // this.hours = '00';
                 this.minutes = '00';
                 this.seconds = '00';
+                return;
             }
+
+            // Total minutes (can exceed 60)
+            this.minutes = String(Math.abs(Math.floor(this.difference / (1000 * 60)))).padStart(2, '0');
+
+            // Seconds within the current minute
+            this.seconds = String(Math.abs(Math.floor((this.difference % (1000 * 60)) / 1000))).padStart(2, '0');
         },
     }));
 });

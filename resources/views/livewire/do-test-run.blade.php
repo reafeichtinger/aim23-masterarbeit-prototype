@@ -12,8 +12,10 @@
             </x-slot:actions>
         </x-header>
 
-        {{-- TODO: Load current task info --}}
+        {{-- Current task info --}}
+        <x-task-info :step="$this->step" :editor="$this->testRun->currentEditor" />
 
+        {{-- Editor --}}
         <div>
             @switch($this->testRun->currentEditor)
                 @case(App\Enums\EditorEnum::GRAPESJS)
