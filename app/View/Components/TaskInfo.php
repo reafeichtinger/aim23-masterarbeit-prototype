@@ -37,7 +37,6 @@ class TaskInfo extends Component
                                     <span>
                                         Dieser Editor unterstützt Variablen. Anstelle von festgelegtem Text, kann das "Variable" Element verwendet werden, 
                                         welches dynamisch Inhalte wie Kundschaftsdaten verwenden kann. Variablen können wie jedes andere Element in den Editor gezogen werden. 
-                                        Diese Variablen können auch in ein Textfeld gezogen werden, um teil des Fließtextes zu werden.
                                     </span>
                                     </li>
                                 </ol>
@@ -95,12 +94,29 @@ class TaskInfo extends Component
                                         </ul>
                                     </li>
                                     <li>
-                                        Die beiden Spalten im Briefkopf sind im Verhältnis 70 zu 30 eingestellt.
+                                        Der Header soll die Position "Fixed" bekommen um auf allen Seiten angezeigt zu werden. Hierfür werden die folgenden Abstände verwendet:
+                                        <ul class="list-disc pl-4">
+                                            <li>
+                                                Oben: 0mm
+                                            </li>
+                                            <li>
+                                                Rechts: 20mm
+                                            </li>
+                                            <li>
+                                                Unten: auto
+                                            </li>
+                                            <li>
+                                                Links: 20mm
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        Die beiden Spalten im Briefkopf sind im Verhältnis 67.7% zu 33.3% eingestellt. Die linke Spalte benötigt ein padding auf der oberen Seite von 50mm.
                                     </li>
                                     <li>
                                         Für die Firmendaten, Kundschaftsdaten und Rechnungsdaten gibt es sogenannte "Variablen", welche als eigenes Element verwendet werden können. 
                                         Dies ist notwendig weil in einem echten Setting, eine Vorlage für ein Rechnungsdokument erstellt werden soll, dementsprechen muss das finale Dokument
-                                        immer mit den korrekten Daten für erstellt werden.
+                                        immer mit den korrekten Daten für erstellt werden. Diese Variablen können auch in ein Textfeld gezogen werden, um teil des Fließtextes zu werden.
                                     </li>
                                     <li>
                                         Das Logo wurde bereits im Projekt hinterlegt und kann ausgewählt werden, wenn das Bild Element verwendet wird. Das Bild bekommt eine Breite von 100%.

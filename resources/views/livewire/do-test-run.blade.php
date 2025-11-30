@@ -17,7 +17,7 @@
 
         {{-- Editor --}}
         <div>
-            @switch($this->testRun->currentEditor)
+            @switch($this->currentEditor)
                 @case(App\Enums\EditorEnum::GRAPESJS)
                     {{-- GrapesJS Editor --}}
                     <livewire:components.grapesjs wire:model.live="content" :name="$this->editor . '_' . $this->step" />
@@ -43,12 +43,13 @@
 
                 {{-- Prev step button --}}
                 @if ($this->editor > 1 || ($this->editor == 1 && $this->step != 1))
-                    <x-button wire:click="prevStep" class="btn-neutral btn-sm" icon="o-chevron-left" label="Zurück" />
+                    <x-button wire:click="prevStep" class="btn-neutral btn-sm" icon="o-chevron-left" label="Zurück"
+                        wire:loading.attr="disabled" />
                 @endif
 
                 {{-- Next step button --}}
-                <x-button wire:click="nextStep" class="btn-primary btn-sm" icon-right="o-chevron-right"
-                    label="Weiter" />
+                <x-button wire:click="nextStep" class="btn-primary btn-sm" icon-right="o-chevron-right" label="Weiter"
+                    spinner />
             </div>
         </div>
     </div>
@@ -60,10 +61,11 @@
 
         <x-slot:actions>
             <div
-                class="bg-base-200 flex-1 flex flex-row items-center justify-end space-x-3 -mx-6 -mb-6 p-2 border-t-[length:var(--border)] border-neutral">
-                <x-button label="Schließen" x-on:click="$wire.set('showDeleteConfirmation', false)"
-                    class="btn-neutral" />
-                <x-button wire:click="deleteTestRun" class="btn-error" icon="o-trash" label="Testlauf abbrechen" />
+                class="bg-base-200 flex-1 flex flex-row items-center justify-end space-x-3 -mx-6 -mb-6 p-2 border-t-(length:--border) border-neutral">
+                <x-button label="Schließen" x-on:click="$wire.set('showDeleteConfirmation', false)" class="btn-neutral"
+                    wire:loading.attr="disabled" />
+                <x-button wire:click="deleteTestRun" class="btn-error" icon="o-trash" label="Testlauf abbrechen"
+                    spinner />
             </div>
         </x-slot:actions>
     </x-modal>

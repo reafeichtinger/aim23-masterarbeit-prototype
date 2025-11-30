@@ -4,7 +4,9 @@ namespace App\Livewire;
 
 use App\Actions\Task\SaveTaskAction;
 use App\Actions\TestRun\DeleteTestRunAction;
+use App\Actions\TestRun\SaveTestRunAction;
 use App\DTOs\TaskData;
+use App\DTOs\TestRunData;
 use App\Enums\EditorEnum;
 use App\Models\Task;
 use App\Models\TestRun;
@@ -57,6 +59,18 @@ class DoTestRun extends Component
     }
 
     #[Computed]
+    public function currentEditor(): EditorEnum
+    {
+        return match (true) {
+            $this->testRun->initial_editor == EditorEnum::CKEDITOR && $this->editor == 1 => EditorEnum::CKEDITOR,
+            $this->testRun->initial_editor == EditorEnum::CKEDITOR && $this->editor == 2 => EditorEnum::GRAPESJS,
+            $this->testRun->initial_editor == EditorEnum::GRAPESJS && $this->editor == 1 => EditorEnum::GRAPESJS,
+            $this->testRun->initial_editor == EditorEnum::GRAPESJS && $this->editor == 2 => EditorEnum::CKEDITOR,
+            default => EditorEnum::CKEDITOR,
+        };
+    }
+
+    #[Computed]
     public function currentTask(): ?Task
     {
         $editor = (match (true) {
@@ -87,6 +101,13 @@ class DoTestRun extends Component
             completed_at: $this->currentTask?->completed_at ?? Carbon::now(),
         ), task: $this->currentTask);
 
+        // Finish the Test run as we have reached the last step
+        if ($nextStep === 1 && $this->editor === 2) {
+            $this->completeTestRun();
+
+            return;
+        }
+
         // Fetch next task if exists
         $nextTask = Task::where('test_run_id', $this->testRunId)
             ->where('editor', $nextStep !== 1 ? $this->testRun->currentEditor : $this->testRun->currentEditor->other())
@@ -98,7 +119,7 @@ class DoTestRun extends Component
             test_run: $this->testRun,
             editor: $nextStep !== 1 ? $this->testRun->currentEditor : $this->testRun->currentEditor->other(),
             step: $nextStep,
-            content: $nextTask->content ?? $this->content,
+            content: $nextStep !== 1 ? ($nextTask->content ?? $this->content) : null,
             started_at: $nextTask?->started_at ?? Carbon::now(),
             completed_at: $nextTask?->completed_at ?? null,
         ), task: $nextTask ?? null);
@@ -126,6 +147,22 @@ class DoTestRun extends Component
         DeleteTestRunAction::handle($this->testRun);
 
         $this->success('Der Testlauf wurde abgebrochen und gelöscht.', redirectTo: route('home'));
+    }
+
+    public function completeTestRun(): void
+    {
+        // Set test run to completed
+        SaveTestRunAction::handle(new TestRunData(
+            initial_editor: $this->testRun->initial_editor,
+            started_at: $this->testRun->started_at,
+            completed_at: Carbon::now(),
+        ), testRun: $this->testRun);
+
+        // Remove test run from session
+        Session::forget('test-run');
+
+        // Redirect back to start
+        $this->success('Der Testlauf wurde erfolgreich abgeschlossen!', redirectTo: route('home'));
     }
 
     #endregion Actions

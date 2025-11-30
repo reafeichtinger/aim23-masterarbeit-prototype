@@ -11,6 +11,7 @@
 
         $currentEditor = $testRun?->getNumberFromEditor($testRun->currentEditor);
         $currentStep = $testRun?->currentStep;
+
     @endphp
 
     {{-- Mobile navbar --}}
@@ -27,7 +28,7 @@
 
         {{-- Sidebar --}}
         <x-slot:sidebar drawer="main-drawer" collapsible
-            class="bg-base-100 rounded-e-2xl border-r-[length:var(--border)] border-neutral"
+            class="bg-base-100 rounded-e-2xl border-r-(length:--border) border-neutral"
             collapse-icon="o-arrow-left-start-on-rectangle" collapse-text="Verkleinern">
 
             {{-- Menu --}}
@@ -41,21 +42,21 @@
                 <div class="pt-0">
 
                     {{-- Editor 1 --}}
-                    <x-menu-sub title="Editor 1" icon="o-h1" open :disabled="$currentEditor !== 1">
+                    <x-menu-sub title="Editor 1" icon="o-h1" open :disabled="!$currentEditor">
 
-                        <x-menu-item title="Aufgabe 1" :disabled="$currentEditor !== 1 || $currentStep < 1"
+                        <x-menu-item title="Aufgabe 1" :disabled="$currentEditor < 2 ? $currentStep < 1 : false"
                             :link="$testRun ? route('test-run', ['testRun' => $testRun->hash, 'editor' => 1, 'step' => 1]) : null" />
 
-                        <x-menu-item title="Aufgabe 2" :disabled="$currentEditor !== 1 || $currentStep < 2"
+                        <x-menu-item title="Aufgabe 2" :disabled="$currentEditor < 2 ? $currentStep < 2 : false"
                             :link="$testRun ? route('test-run', ['testRun' => $testRun->hash, 'editor' => 1, 'step' => 2]) : null" />
 
-                        <x-menu-item title="Aufgabe 3" :disabled="$currentEditor !== 1 || $currentStep < 3"
+                        <x-menu-item title="Aufgabe 3" :disabled="$currentEditor < 2 ? $currentStep < 3 : false"
                             :link="$testRun ? route('test-run', ['testRun' => $testRun->hash, 'editor' => 1, 'step' => 3]) : null" />
 
-                        <x-menu-item title="Aufgabe 4" :disabled="$currentEditor !== 1 || $currentStep < 4"
+                        <x-menu-item title="Aufgabe 4" :disabled="$currentEditor < 2 ? $currentStep < 4 : false"
                             :link="$testRun ? route('test-run', ['testRun' => $testRun->hash, 'editor' => 1, 'step' => 4]) : null" />
 
-                        <x-menu-item title="Aufgabe 5" :disabled="$currentEditor !== 1 || $currentStep < 5"
+                        <x-menu-item title="Aufgabe 5" :disabled="$currentEditor < 2 ? $currentStep < 5 : false"
                             :link="$testRun ? route('test-run', ['testRun' => $testRun->hash, 'editor' => 1, 'step' => 5]) : null" />
 
                     </x-menu-sub>
