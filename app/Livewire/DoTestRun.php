@@ -2,15 +2,16 @@
 
 namespace App\Livewire;
 
+use App\Actions\Task\SaveTaskAction;
 use App\Actions\TestRun\DeleteTestRunAction;
+use App\DTOs\TaskData;
 use App\Enums\EditorEnum;
 use App\Models\Task;
 use App\Models\TestRun;
-use Illuminate\Support\Arr;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Session;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Locked;
-use Livewire\Attributes\On;
 use Vinkla\Hashids\Facades\Hashids;
 
 class DoTestRun extends Component
@@ -74,11 +75,39 @@ class DoTestRun extends Component
 
     public function nextStep(): void
     {
+        $nextStep = $this->step == 5 ? 1 : $this->step + 1;
+
+        // Update the current task with content and set it to completed
+        SaveTaskAction::handle(new TaskData(
+            test_run: $this->testRun,
+            editor: $this->testRun->currentEditor,
+            step: $this->step,
+            content: $this->content,
+            started_at: $this->currentTask?->started_at ?? Carbon::now(),
+            completed_at: $this->currentTask?->completed_at ?? Carbon::now(),
+        ), task: $this->currentTask);
+
+        // Fetch next task if exists
+        $nextTask = Task::where('test_run_id', $this->testRunId)
+            ->where('editor', $nextStep !== 1 ? $this->testRun->currentEditor : $this->testRun->currentEditor->other())
+            ->where('step', $nextStep)
+            ->first();
+
+        // Create or update Task for the next step/editor
+        SaveTaskAction::handle(new TaskData(
+            test_run: $this->testRun,
+            editor: $nextStep !== 1 ? $this->testRun->currentEditor : $this->testRun->currentEditor->other(),
+            step: $nextStep,
+            content: $nextTask->content ?? $this->content,
+            started_at: $nextTask?->started_at ?? Carbon::now(),
+            completed_at: $nextTask?->completed_at ?? null,
+        ), task: $nextTask ?? null);
+
         // Navigate to the next step
         $this->redirectRoute('test-run', [
             'testRun' => $this->testRun->hash,
             'editor' => $this->editor + ($this->step == 5 ? 1 : 0),
-            'step' => $this->step == 5 ? 1 : $this->step + 1,
+            'step' => $nextStep,
         ], navigate: true);
     }
 
@@ -102,20 +131,11 @@ class DoTestRun extends Component
     #endregion Actions
     #region Listeners
 
-    public function updatedContent(mixed $val): void
+    public function updatedContent(mixed $newContent = null): void
     {
-        Session::put("test-run.editor-{$this->editor}.step-{$this->step}.content", $this->content);
+        Session::put("test-run.editor-{$this->editor}.step-{$this->step}.content", $newContent);
         Session::save();
     }
-
-    // #[On('editor-content-changed')]
-    // public function onEditorContentChanged(string $editorId, array $content): void
-    // {
-    //     $this->content = Arr::get($content, 'main');
-
-    //     Session::put("test-run.editor-{$this->editor}.step-{$this->step}.content", $this->content);
-    //     Session::save();
-    // }
 
     #endregion Listeners
 }

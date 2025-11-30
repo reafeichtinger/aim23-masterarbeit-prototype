@@ -55,5 +55,13 @@ enum EditorEnum: string implements EnumPlus
         };
     }
 
+    public function other(): static
+    {
+        return match ($this) {
+            self::CKEDITOR => self::GRAPESJS,
+            self::GRAPESJS => self::CKEDITOR,
+        };
+    }
+
     #endregion Helpers
 }

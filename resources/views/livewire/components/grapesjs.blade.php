@@ -3,7 +3,7 @@
     name: @js($name),
     initialContent: @js($grapesjsContent),
 })" x-on:livewire:navigate.window="destroy()" wire:ignore>
-    <div id="grapesjs_{{ $name }}" class="min-h-[75vh]"></div>
+    <div id="grapesjs_{{ $name }}" class="min-h-[90vh]"></div>
 </div>
 
 @script
@@ -41,14 +41,54 @@
                             })
                         ],
 
+                        // Custom fake storage handler
+                        assets: {
+                            storageType: 'self',
+                            onUpload: async ({
+                                files,
+                                editor
+                            }) => {
+                                throw new Error('Das Hochladen von Bildern ist nicht implementiert.');
+                            },
+                            onDelete: async ({
+                                assets,
+                                editor
+                            }) => {
+                                throw new Error('Das Löschen von Bildern ist nicht implementiert.');
+                            },
+                            onLoad: async () => {
+                                // Make logo available
+                                return [{
+                                    "name": "Venuzle Logo",
+                                    "type": "image",
+                                    "src": "http://localhost:8000/storage/grapesjs-assets/venuzle-logo.png",
+                                }];
+                            },
+                        },
+
                         project: {
                             type: 'document',
                             default: {
+                                assets: [{
+                                    "name": "Venuzle Logo",
+                                    "type": "image",
+                                    "src": "http://localhost:8000/storage/grapesjs-assets/venuzle-logo.png",
+                                }],
+                                styles: [],
                                 pages: [{
                                     name: 'Page',
                                     component: ''
+                                }],
+                                dataSources: [{
+                                    id: "globalStyles",
+                                    records: []
                                 }]
+
                             }
+                        },
+
+                        globalStyles: {
+                            default: []
                         },
 
                         layout: {
@@ -60,14 +100,44 @@
                                         children: {
                                             type: 'panelLayers',
                                             header: {
-                                                label: 'Layers',
+                                                label: 'Elemente',
                                                 collapsible: false,
                                                 icon: 'layers'
                                             }
                                         }
                                     },
                                     {
-                                        type: 'canvasSidebarTop'
+                                        type: 'canvasSidebarTop',
+                                        sidebarTop: {
+                                            rightContainer: {
+                                                buttons: ({
+                                                    items
+                                                }) => [
+                                                    // Add custom print button
+                                                    {
+                                                        id: 'print',
+                                                        tooltip: 'Print',
+                                                        icon: '<svg viewBox="0 0 24 24"><path d="M18 3H6v4h12m1 5a1 1 0 0 1-1-1 1 1 0 0 1 1-1 1 1 0 0 1 1 1 1 1 0 0 1-1 1m-3 7H8v-5h8m3-6H5a3 3 0 0 0-3 3v6h4v4h12v-4h4v-6a3 3 0 0 0-3-3Z"/></svg>',
+                                                        onClick: ({
+                                                            editor
+                                                        }) => editor.runCommand(
+                                                            'presetPrintable:print')
+                                                    },
+                                                    ...items.filter(item => ![
+                                                        'componentOutline',
+                                                        'clearCanvas',
+                                                        'store',
+                                                        'fullscreen',
+                                                    ].includes(item.id))
+                                                ].map((e) => {
+                                                    // Change icon for import
+                                                    if (e.id == 'showImportCode') {
+                                                        e.icon = 'codeBrackets';
+                                                    }
+                                                    return e;
+                                                })
+                                            }
+                                        }
                                     },
                                     {
                                         type: 'sidebarRight'
@@ -296,10 +366,16 @@
 
                         dataSources: {
                             blocks: true, // This enables the Data Source specific blocks
+                            globalStyles: {},
                             globalData: { // Provide default globalData for the project
                                 operator: {
-                                    name: 'Muster GmbH',
-                                    address: 'Musterstraße 6 | 27550 Musterstadt',
+                                    name: 'Venuzle GmbH',
+                                    address: 'Musterstraße 6, 27550 Musterstadt',
+                                    phone: '+43 000 000 0000',
+                                    fax: '+43 000 000 0000',
+                                    email: 'hallo@venuzle.at',
+                                    iban: 'AT00 0000 0000 0000 0000',
+                                    bic: 'AT00 0000 0000 0000 0000',
                                 },
                                 recipient: {
                                     id: '5034',
@@ -353,7 +429,44 @@
                                 }, 400);
                             },
 
-                            onLoad: () => {
+                            onLoad: ({
+                                editor
+                            }) => {
+                                const sm = editor.StyleManager;
+                                const unitsToAdd = ['cm', 'mm'];
+
+                                // Loop through all sectors & properties so we cann add the units
+                                sm.getSectors().forEach(sector => {
+                                    sector.getProperties().forEach(prop => {
+
+                                        // CASE 1: direct numeric property (width, height, font-size, etc.)
+                                        if (prop.get('type') === 'number') {
+                                            const units = prop.get('units') || [];
+                                            prop.set('units', [...new Set([...units, ...
+                                                unitsToAdd
+                                            ])]);
+                                        }
+
+                                        // CASE 2: composite property (margin, padding, border-radius, etc.)
+                                        if (prop.get('type') === 'composite') {
+                                            prop.get('properties').forEach(subProp => {
+                                                if (subProp.get('type') ===
+                                                    'number') {
+                                                    const units = subProp.get(
+                                                        'units') || [];
+                                                    subProp.set('units', [...
+                                                        new Set([...
+                                                            units,
+                                                            ...
+                                                            unitsToAdd
+                                                        ])
+                                                    ]);
+                                                }
+                                            });
+                                        }
+                                    });
+                                });
+
                                 return {
                                     project: initialContent ?
                                         JSON.parse(initialContent) : {}
