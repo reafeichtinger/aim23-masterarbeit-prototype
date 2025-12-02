@@ -261,8 +261,36 @@ class TaskInfo extends Component
                             @default
                         @endswitch
                     @else
-                        {{-- CKEditor5 --}}
-                        TODO: CKEditor5
+                        @switch($this->step)
+                            {{-- Header --}}
+                            @case(1)
+                            <div class="space-y-2 max-w-6xl mx-auto pb-6">
+                                <span class="text-lg text-base-content/50 font-medium mb-2 block">Allgemeine Informationen:</span>
+                                <p>
+                                    Der aktuelle Editor bietet im Grunde alle klassischen HTML und CSS Möglichkeiten an, wordurch man im Grunde jedes beliebige Layout erstellen kann. 
+                                    Zu Beginn kann dies aber ein wenig überfordernd sein oder für Personen ohne Kenntnisse in HTML und CSS Schwierigkeiten bereiten.
+                                </p>
+                                <p>
+                                    Falls Sie Hilfe beim Interagieren mit dem Editor brauchen gibt es ganz oben auf der Seite einen erweiterbaren Reiter "Editor Tipps & Hilfestellungen". 
+                                    Zusätzlich gibt es bei groben Problemen die Möglichkeit, Rea um Hilfe zu bitten.
+                                </p>
+                                <p>
+                                    Um einfacher mit dem Editor arbeiten zu können, kann die Sidebar über den "Verkleinern" Button ganz links unten eingeklappt werden, was mehr Platz für den Editor lässt.
+                                </p>
+                                <p>
+                                    Ziel ist es die Vorlage möglichst gleich nachzubilden, dies sollte jedoch so schnell wie möglich durchgeführt werden.
+                                    Sobald Sie mit Ihrem Layout zufrieden sind, können Sie auf den "Weiter" Button ganz unten rechts auf der Seite zur nächsten Aufgabe fortfahren.
+                                </p>
+                                <x-hr />
+                                <span class="text-lg text-base-content/50 font-medium mb-2 block">Aufgabenstellung:</span>
+                                <p>
+                                    Die erste Aufgabe besteht darin, einen Briefkopf zu erstellen, welche mit der DIN-Norm 50008 kompatibel ist.
+                                    Der Briefkopf besteht aus Firmendaten, Firmenlogo, Kundschaftsdaten und Rechnungsdaten (Vorlage siehe Bild unten).
+                                </p>
+                            </div>
+                            @break
+                            @default
+                        @endswitch
                     @endif
                 </div>
             BLADE;

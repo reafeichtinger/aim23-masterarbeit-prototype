@@ -1,5 +1,6 @@
 import '@fontsource-variable/lexend-deca';
 import './grapes.js';
+import './ckeditor5.js';
 
 import { Livewire, Alpine } from '../../vendor/livewire/livewire/dist/livewire.esm';
 

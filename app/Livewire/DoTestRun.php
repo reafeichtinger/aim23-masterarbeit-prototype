@@ -73,15 +73,7 @@ class DoTestRun extends Component
     #[Computed]
     public function currentTask(): ?Task
     {
-        $editor = (match (true) {
-            $this->testRun->initial_editor == EditorEnum::CKEDITOR && $this->editor == 1 => EditorEnum::CKEDITOR,
-            $this->testRun->initial_editor == EditorEnum::CKEDITOR && $this->editor == 2 => EditorEnum::GRAPESJS,
-            $this->testRun->initial_editor == EditorEnum::GRAPESJS && $this->editor == 1 => EditorEnum::GRAPESJS,
-            $this->testRun->initial_editor == EditorEnum::GRAPESJS && $this->editor == 2 => EditorEnum::CKEDITOR,
-            default => EditorEnum::CKEDITOR,
-        })->value;
-
-        return $this->testRun->tasks->where('editor', $editor)->where('step', $this->step)->first();
+        return $this->testRun->tasks->where('editor', $this->currentEditor->value)->where('step', $this->step)->first();
     }
 
     #endregion Properties
@@ -90,11 +82,12 @@ class DoTestRun extends Component
     public function nextStep(): void
     {
         $nextStep = $this->step == 5 ? 1 : $this->step + 1;
+        $nextEditor = $this->editor + ($this->step == 5 ? 1 : 0);
 
         // Update the current task with content and set it to completed
         SaveTaskAction::handle(new TaskData(
             test_run: $this->testRun,
-            editor: $this->testRun->currentEditor,
+            editor: $this->currentEditor,
             step: $this->step,
             content: $this->content,
             started_at: $this->currentTask?->started_at ?? Carbon::now(),
@@ -110,24 +103,28 @@ class DoTestRun extends Component
 
         // Fetch next task if exists
         $nextTask = Task::where('test_run_id', $this->testRunId)
-            ->where('editor', $nextStep !== 1 ? $this->testRun->currentEditor : $this->testRun->currentEditor->other())
+            ->where('editor', $nextStep !== 1 ? $this->currentEditor : $this->currentEditor->other())
             ->where('step', $nextStep)
             ->first();
 
         // Create or update Task for the next step/editor
-        SaveTaskAction::handle(new TaskData(
+        $nextTask = SaveTaskAction::handle(new TaskData(
             test_run: $this->testRun,
-            editor: $nextStep !== 1 ? $this->testRun->currentEditor : $this->testRun->currentEditor->other(),
+            editor: $nextStep !== 1 ? $this->currentEditor : $this->currentEditor->other(),
             step: $nextStep,
             content: $nextStep !== 1 ? ($nextTask->content ?? $this->content) : null,
             started_at: $nextTask?->started_at ?? Carbon::now(),
             completed_at: $nextTask?->completed_at ?? null,
         ), task: $nextTask ?? null);
 
+        // Put new content into session for next step
+        Session::put("test-run.editor-{$nextEditor}.step-{$nextStep}.content", $nextTask->content);
+        Session::save();
+
         // Navigate to the next step
         $this->redirectRoute('test-run', [
             'testRun' => $this->testRun->hash,
-            'editor' => $this->editor + ($this->step == 5 ? 1 : 0),
+            'editor' => $nextEditor,
             'step' => $nextStep,
         ], navigate: true);
     }

@@ -5,6 +5,9 @@ return [
     'presets' => [
         'default' => [
             'licenseKey' => env('CKEDITOR_LICENSE_KEY'),
+            'tokenUrl' => env('CKEDITOR_TOKEN_URL'),
+            'authorization' => env('CKEDITOR_AUTHORIZATION'),
+            'environment' => env('CKEDITOR_ENVIRONMENT'),
             'editorType' => 'classic',
             'cloud' => [
                 'editorVersion' => env('CKEDITOR_VERSION', '47.2.0'),

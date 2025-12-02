@@ -70,11 +70,15 @@ class PdfToPng extends Command
             mkdir($outputDir);
         }
 
-        // Convert to png
-        $pdf = new Pdf($input);
-        $result = $pdf->format(OutputFormat::Png)->save($output);
-        $result = implode('", "', Arr::wrap($result));
+        // Convert to png with https://github.com/spatie/pdf-to-image
+        $result = (new Pdf($input))
+            ->quality(100)
+            ->format(OutputFormat::Png)
+            ->backgroundColor('#FFFFFF')
+            ->save($output);
 
+        // Print resulting file paths
+        $result = implode('", "', Arr::wrap($result));
         $this->components->success("Created output file(s) \"$result\"");
 
         return Command::SUCCESS;

@@ -61,7 +61,7 @@
                                 return [{
                                     "name": "Venuzle Logo",
                                     "type": "image",
-                                    "src": "http://localhost:8000/storage/grapesjs-assets/venuzle-logo.png",
+                                    "src": "http://localhost:8000/storage/assets/venuzle-logo.png",
                                 }];
                             },
                         },
@@ -72,7 +72,7 @@
                                 assets: [{
                                     "name": "Venuzle Logo",
                                     "type": "image",
-                                    "src": "http://localhost:8000/storage/grapesjs-assets/venuzle-logo.png",
+                                    "src": "http://localhost:8000/storage/assets/venuzle-logo.png",
                                 }],
                                 styles: [],
                                 pages: [{
@@ -375,7 +375,7 @@
                                     fax: '+43 000 000 0000',
                                     email: 'hallo@venuzle.at',
                                     iban: 'AT00 0000 0000 0000 0000',
-                                    bic: 'AT00 0000 0000 0000 0000',
+                                    bic: 'FABAATGR',
                                 },
                                 recipient: {
                                     id: '5034',
