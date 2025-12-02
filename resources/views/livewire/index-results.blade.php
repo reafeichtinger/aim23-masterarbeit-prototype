@@ -4,9 +4,11 @@
     <div class="card px-6 py-4 space-y-4">
         <x-header title="Auswertung" subtitle="Hier sind alle bisher durchgeführten Testläufe." />
 
-        <div class="border-[length:var(--border)] border-neutral rounded-field overflow-hidden">
+        <div class="border-(length:--border) border-neutral rounded-field overflow-hidden">
             <x-table :headers="$this->testRunHeaders" :rows="$this->testRuns" show-empty-text
-                emptyText="Es wurden noch keine Testläufe aufgezeichnet...">
+                emptyText="Es wurden noch keine Testläufe aufgezeichnet..." :row-decoration="[
+                    'bg-primary/10 hover:bg-primary/15' => fn($testRun) => $testRun->hash == session('test-run.hash'),
+                ]">
 
                 @scope('cell_started_at', $testRun)
                     {{ App\Utils\DateX::formatDateTime($testRun->started_at, withSeconds: true) }}
@@ -17,7 +19,11 @@
                 @endscope
 
                 @scope('actions', $testRun)
-                    <div class="flex flex-row items-center space-x-2">
+                    <div class="flex flex-row justify-end items-center space-x-2">
+                        @if ($testRun->hash == session('test-run.hash'))
+                            <x-button icon="o-stop" wire:click="deselectTestRun" wire:loading.attr="disabled"
+                                class="btn-sm btn-square btn-ghost text-warning" tooltip-left="Testlauf abwählen" />
+                        @endif
                         <x-button icon="o-play" wire:click="continueTestRun('{{ $testRun->hash }}')"
                             wire:loading.attr="disabled" class="btn-sm btn-square btn-ghost text-success"
                             tooltip-left="Testlauf laden" />

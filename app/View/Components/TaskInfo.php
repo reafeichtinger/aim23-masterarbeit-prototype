@@ -109,40 +109,154 @@ class TaskInfo extends Component
                                                 Links: 20mm
                                             </li>
                                         </ul>
+                                        Zusätzlich braucht der Header die Darstellung "flex" mit horizontaler Anordnung.
                                     </li>
                                     <li>
-                                        Die beiden Spalten im Briefkopf sind im Verhältnis 67.7% zu 33.3% eingestellt. Die linke Spalte benötigt ein padding auf der oberen Seite von 50mm.
+                                        Die beiden Spalten im Briefkopf sind im Verhältnis 67.7% zu 33.3% eingestellt. <br/>
+                                        Die linke Spalte benötigt ein Padding auf der oberen Seite von 50mm und wird als "flex" angezeigt mit vertikaler Anordnung und linksbündigem Alignment. 
+                                        Die Firmendaten haben eine Schriftgröße von 14 px. Die Kundschaftsdaten haben ein Margin oben von 5mm. <br/>
+                                        Die rechte Spalte wird ebenfals als "flex" angezeigt mit vertikaler Anordnung und linksbündigem Alignment, jedoch zusätzlich mit einem "justify" Wert "end".
+                                    </li>
+                                    <li>
+                                        Das Logo wurde bereits im Projekt hinterlegt und kann ausgewählt werden, wenn das Bild Element verwendet wird. Das Bild bekommt eine Breite von 100% und einen Margin unten von 20mm.
                                     </li>
                                     <li>
                                         Für die Firmendaten, Kundschaftsdaten und Rechnungsdaten gibt es sogenannte "Variablen", welche als eigenes Element verwendet werden können. 
                                         Dies ist notwendig weil in einem echten Setting, eine Vorlage für ein Rechnungsdokument erstellt werden soll, dementsprechen muss das finale Dokument
-                                        immer mit den korrekten Daten für erstellt werden. Diese Variablen können auch in ein Textfeld gezogen werden, um teil des Fließtextes zu werden.
-                                    </li>
-                                    <li>
-                                        Das Logo wurde bereits im Projekt hinterlegt und kann ausgewählt werden, wenn das Bild Element verwendet wird. Das Bild bekommt eine Breite von 100%.
+                                        immer mit den korrekten Daten für erstellt werden. Diese Variablen können auch in ein Textfeld gezogen werden, um Teil des Fließtextes zu werden.
                                     </li>
                                 </ol>
                             </div>
                             <div class="w-full flex flex-col items-center justify-center bg-[#F7F7F7] rounded-field pt-1 pb-2">
                                 <span class="text-base-content/50 max-w-[210mm] w-full text-sm mb-0.5">Vorlage:</span>
-                                <img src="{{ asset('img/header.png') }}" alt="" class="max-w-[210mm] rounded-field">
+                                <img src="{{ asset('img/grapesjs_header.png') }}" alt="" class="max-w-[210mm] rounded-field">
                             </div>
                             @break
                             {{-- Table --}}
                             @case(2)
-                                Step Two
+                            <div class="space-y-2 max-w-6xl mx-auto pb-6">
+                                <span class="text-lg text-base-content/50 font-medium mb-2 block">Aufgabenstellung:</span>
+                                <p>
+                                    Die zweite Aufgabe besteht darin, eine Tabelle für die Rechnungspositionen zu erstellen.
+                                    Hierbei soll ein Heading, eine Tabelle und die Tabellenzusammenfassung hinzugefügt werden.
+                                </p>
+                                <p>
+                                    Das Tabellen-Element unterstützt aktuell leider keine direkten Schleifen für Zeilen und auch das Styling wird nicht vollständig gespeichert. 
+                                    Es ist jedoch dennoch möglich eine Tabelle mit den Rechnungspositionen darzustellen. Hierfür bekommt die Tabelle zwei Zeilen, eine Header-Zeile und eine für den Inhalt.
+                                    In jeder Spalte der Inhalts-Zeile wird dann eine Schleife für die Positionen verwendet mit dem entsprechenden Wert der Rechnungsposition.
+                                </p>
+                                <x-hr />
+                                <span class="text-lg text-base-content/50 font-medium mb-2 block">Tipps:</span>
+                                <ol class="list-decimal pl-4 space-y-4">
+                                    <li>
+                                        Das Heading hat eine Größe von 2rem und soll in der Farbe Schwarz <span class="bg-neutral px-1.5 py-0.5 rounded-field text-sm text-base-content/75">rgba(0, 0, 0, 1)</span> angezeigt werden.
+                                    </li>
+                                    <li>
+                                        Das Tabellen-Element bekommt einen Margin oben von 1cm. Die Spalten im Header bekommen ein Padding oben und unten von 4px. 
+                                        Die "Einzelpreis" Spalte hat zentrierten Text und die "Betrag" Spalte rechtsbündigen.
+                                    </li>
+                                    <li>
+                                        Die einzelnen Spalten der Content Zeile bekommen jeweils eine Schleife, welche über <strong>alle</strong> Rechnungspositionen iteriert. 
+                                        Das Schleifenelement ist eine Variable, welches auf den jewiligen Wert der Spalte zugreift.
+                                    </li>
+                                    <li>
+                                        Der Footer der Tabelle wird als vertikaler "flex" angezeigt und verwendet das Alignment "end". Das Padding oben & unten beträgt 10px.
+                                        Das Column im Footer bekommt eine Breite von 33% und eine doppelte Border von 3px am oberen Rand. In diesem Column gibt es zwei Reihen,
+                                        diese werden als horizontaler "flex" angezeigt, haben einen Justify Wert "space between", ein Alignment "center" und ein Padding oben und unten von 4px.
+                                        Die Variable benötigt einen Flex Wert "hug contents" um nur den benötigten Platz zu verbrauchen.
+                                    </li>
+                                </ol>
+                            </div>
+                            <div class="w-full flex flex-col items-center justify-center bg-[#F7F7F7] rounded-field pt-1 pb-2">
+                                <span class="text-base-content/50 max-w-[210mm] w-full text-sm mb-0.5">Vorlage:</span>
+                                <img src="{{ asset('img/grapesjs_table.png') }}" alt="" class="max-w-[210mm] rounded-field">
+                            </div>
                             @break
                             {{-- Text --}}
                             @case(3)
-                                Step Three
+                            <div class="space-y-2 max-w-6xl mx-auto pb-6">
+                                <span class="text-lg text-base-content/50 font-medium mb-2 block">Aufgabenstellung:</span>
+                                <p>
+                                    Die dritte Aufgabe besteht darin, den Text des Rechnungsdokuments zu erstellen.
+                                    Hierbei soll ein neues Column angelegt werden in dem sich die Begrüßung, der Inhalt mit dem Fälligkeitsdatum der Rechnung und die Signatur befindet.
+                                </p>
+                                <x-hr />
+                                <span class="text-lg text-base-content/50 font-medium mb-2 block">Tipps:</span>
+                                <ol class="list-decimal pl-4 space-y-4">
+                                    <li>
+                                        Das Column hat einen Margin oben von 1cm und wird als vertikaler "flex" angezeigt mit einer "Gap" von 16px zwischen der Begrüßung, dem Inhalt und der Signatur.
+                                    </li>
+                                    <li>
+                                        Hier ist der Text zum Kopieren, die Variablen müssen manuell ersetzt werden:
+                                        <p class="text-base-content/50 mt-2">
+                                            Hallo [[ globalData.recipient.data.name ]]!<br/><br/>
+                                            Vielen Dank für Ihre Bestellung und Ihr Vertrauen. Bitte begleichen Sie den offenen Rechnungsbetrag bis [[ globalData.invoice.data.dueDate ]]auf das in der Fußzeile angegebene Konto.<br/><br/>
+                                            Mit freundlichen Grüßen <br/>
+                                            Ihre [[ globalData.operator.data.name ]]
+                                        </p>
+                                    </li>
+                                </ol>
+                            </div>
+                            <div class="w-full flex flex-col items-center justify-center bg-[#F7F7F7] rounded-field pt-1 pb-2">
+                                <span class="text-base-content/50 max-w-[210mm] w-full text-sm mb-0.5">Vorlage:</span>
+                                <img src="{{ asset('img/grapesjs_text.png') }}" alt="" class="max-w-[210mm] rounded-field">
+                            </div>
                             @break
                             {{-- Footer --}}
                             @case(4)
-                                Step Four
+                            <div class="space-y-2 max-w-6xl mx-auto pb-6">
+                                <span class="text-lg text-base-content/50 font-medium mb-2 block">Aufgabenstellung:</span>
+                                <p>
+                                    Die vierte Aufgabe besteht darin, den Footer des Rechnungsdokuments zu erstellen.
+                                    Der Footer besteht aus Kontaktdaten und der Bankverbindung der Firma. Diese Werte sollen ebenfalls wieder als Variablen angelegt werden.
+                                </p>
+                                <x-hr />
+                                <span class="text-lg text-base-content/50 font-medium mb-2 block">Tipps:</span>
+                                <ol class="list-decimal pl-4 space-y-4">
+                                    <li>
+                                        Gleich wie beim Header auch, soll der Footer die Positionierung "Fixed" bekommen und die folgenden Werte für die Abstände verwenden:
+                                        <ul class="list-disc pl-4">
+                                            <li>
+                                                Oben: auto
+                                            </li>
+                                            <li>
+                                                Rechts: 0mm
+                                            </li>
+                                            <li>
+                                                Unten: 0mm
+                                            </li>
+                                            <li>
+                                                Links: 0mm
+                                            </li>
+                                        </ul>
+                                        Der Footer soll als horizontaler "flex" angezeigt werden mit einem "Justify" Wert von "space evenly" und einem Alignment "center". 
+                                        Ebenfalls hat der Footer ein Padding oben und unten von 5mm und eine solide Border an der oberen Seite mit 1px Breite.
+                                    </li>
+                                    <li>
+                                        Die beiden Spalten werden auf die gleiche Weise konfiguriert. Anzeige als vertikaler "flex" mit einem Flex Wert "hug contents" und einer Schriftgröße von 12px.
+                                        Ich empfehle zuerst die linke Spalte anzulegen und zu befüllen, danach kann diese dupliziert werden.
+                                    </li>
+                                    <li>
+                                        Innerhalb der Spalte gibt es ein kleines Heading mit 14px Textgröße und 6px Margin unten.
+                                    </li>
+                                </ol>
+                            </div>
+                            <div class="w-full flex flex-col items-center justify-center bg-[#F7F7F7] rounded-field pt-1 pb-2">
+                                <span class="text-base-content/50 max-w-[210mm] w-full text-sm mb-0.5">Vorlage:</span>
+                                <img src="{{ asset('img/grapesjs_footer.png') }}" alt="" class="max-w-[210mm] rounded-field">
+                            </div>
                             @break
                             {{-- Review and complete --}}
                             @case(5)
-                                Step Five
+                            <div class="space-y-2 max-w-6xl mx-auto pb-6">
+                                <span class="text-lg text-base-content/50 font-medium mb-2 block">Aufgabenstellung:</span>
+                                Im letzen Schritt können sie das gesamte Layout nocheinmal überarbeiten um möglichst genau die Vorlage abzubilden. 
+                                Wenn Sie zufrieden mit ihrem Dokument sind drücken Sie einfach den "Weiter" Button um zum nächsten Editor zu kommen oder den Testlauf abzuschließen.
+                            </div>
+                            <div class="w-full flex flex-col items-center justify-center bg-[#F7F7F7] rounded-field pt-1 pb-2">
+                                <span class="text-base-content/50 max-w-[210mm] w-full text-sm mb-0.5">Vorlage:</span>
+                                <img src="{{ asset('img/grapesjs.png') }}" alt="" class="max-w-[210mm] rounded-field">
+                            </div>
                             @break
                             @default
                         @endswitch

@@ -12,6 +12,7 @@ document.addEventListener('alpine:init', () => {
     Alpine.data('countdown', (expiresData) => ({
         seconds: '00',
         minutes: '00',
+        hours: '00',
         difference: 0,
         countdown: null,
         expires: new Date(expiresData).getTime(),
@@ -34,8 +35,11 @@ document.addEventListener('alpine:init', () => {
                 return;
             }
 
-            // Total minutes (can exceed 60)
-            this.minutes = String(Math.abs(Math.floor(this.difference / (1000 * 60)))).padStart(2, '0');
+            // Hours (total)
+            this.hours = String(Math.abs(Math.floor(this.difference / (1000 * 60 * 60))) - 1).padStart(2, '0');
+
+            // Minutes (0–59)
+            this.minutes = String(Math.abs(Math.floor((this.difference % (1000 * 60 * 60)) / (1000 * 60))) - 1).padStart(2, '0');
 
             // Seconds within the current minute
             this.seconds = String(Math.abs(Math.floor((this.difference % (1000 * 60)) / 1000))).padStart(2, '0');

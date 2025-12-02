@@ -13,7 +13,7 @@
         </x-header>
 
         {{-- Current task info --}}
-        <x-task-info :step="$this->step" :editor="$this->testRun->currentEditor" />
+        <x-task-info :step="$this->step" :editor="$this->currentEditor" />
 
         {{-- Editor --}}
         <div>

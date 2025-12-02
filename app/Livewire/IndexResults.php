@@ -65,6 +65,13 @@ class IndexResults extends Component
         }
     }
 
+    public function deselectTestRun(): void
+    {
+        Session::remove('test-run');
+        $this->success('Der Testlauf wurde abgewählt.');
+        $this->redirectReload();
+    }
+
     #endregion Actions
     #region Listeners
 

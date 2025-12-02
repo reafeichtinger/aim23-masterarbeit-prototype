@@ -22,7 +22,7 @@ class DateX
             return $default;
         }
 
-        $input = static::parseInput($input, $tz);
+        $input = static::parse($input, $tz);
 
         return $translated ? $input->translatedFormat($format) : $input->format($format);
     }
@@ -36,7 +36,7 @@ class DateX
             return $default;
         }
 
-        return static::parseInput($input, $tz)->translatedFormat($withSeconds ? 'H:i:s' : 'H:i');
+        return static::parse($input, $tz)->translatedFormat($withSeconds ? 'H:i:s' : 'H:i');
     }
 
     /**
@@ -48,7 +48,7 @@ class DateX
             return $default;
         }
 
-        return static::parseInput($input, $tz)->translatedFormat('D d.m.Y');
+        return static::parse($input, $tz)->translatedFormat('D d.m.Y');
     }
 
     /**
@@ -60,7 +60,7 @@ class DateX
             return $default;
         }
 
-        return static::parseInput($input, $tz)->translatedFormat($withSeconds ? 'D d.m.Y H:i:s' : 'D d.m.Y H:i');
+        return static::parse($input, $tz)->translatedFormat($withSeconds ? 'D d.m.Y H:i:s' : 'D d.m.Y H:i');
     }
 
     /**
@@ -83,8 +83,8 @@ class DateX
         }
 
         // Parse values to Carbon instances
-        $from = static::parseInput($from, $tz);
-        $until = static::parseInput($until, $tz);
+        $from = static::parse($from, $tz);
+        $until = static::parse($until, $tz);
 
         // If from and until are in the wrong order, swap them
         if ($from->isAfter($until)) {
@@ -116,7 +116,7 @@ class DateX
 
     #region Helpers
 
-    private static function parseInput(null|string|Carbon $input = null, null|int|string|DateTimeZone $tz = null): Carbon
+    public static function parse(null|string|Carbon $input = null, null|int|string|DateTimeZone $tz = null): Carbon
     {
         $input = $input instanceof Carbon ? $input->copy() : Carbon::parse($input);
         $input = $input->setTimezone($tz ?? 'Europe/Vienna');
