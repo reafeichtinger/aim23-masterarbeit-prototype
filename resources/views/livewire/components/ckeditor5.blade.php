@@ -12,11 +12,10 @@
     <div class="relative w-full border-(length:--border) border-neutral rounded-field mx-auto bg-base-200 py-2"
         style="font-size: 12pt">
         {{-- Editor injection point -> will be hidden and the editable box will be appended below --}}
-        <div class="min-w-[21cm] min-h-[29.7cm] max-w-[21cm] max-h-[29.7cm] mx-auto bg-white"
-            id="ckeditor_{{ $name }}">
+        <div class="h-[297mm] w-[210mm] mx-auto bg-white" id="ckeditor_{{ $name }}">
             {!! $this->ckeditorContent !!}
         </div>
-
+        {{-- Print pdf button --}}
         <x-button class="absolute top-2 right-2 btn-ghost btn-square" wire:click="print" icon="o-printer" spinner
             tooltip-left="PDF Datei generieren" />
     </div>
@@ -103,17 +102,14 @@
                 .create(document.querySelector('#ckeditor_{{ $name }}'), {
                     licenseKey: '{{ config('ckeditor5.presets.default.licenseKey') }}',
                     language: {
-                        // The UI will be English.
                         ui: 'de',
-
-                        // But the content will be edited in Arabic.
                         content: 'de'
                     },
                     menuBar: {
                         isVisible: true,
+                        removeItems: ['menuBar:exportPdf'],
                     },
                     toolbar: [
-                        // 'exportPdf',
                         'insertTemplate',
                         'insertMergeField',
                         'previewMergeFields',

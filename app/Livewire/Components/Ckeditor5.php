@@ -3,7 +3,7 @@
 namespace App\Livewire\Components;
 
 use App\Utils\DocumentVariables;
-use App\Utils\GotenbergApi;
+use App\Utils\Pdf;
 use Illuminate\Support\Facades\Blade;
 use Livewire\Attributes\Modelable;
 use Livewire\Component;
@@ -33,26 +33,7 @@ class Ckeditor5 extends Component
 
     public function print(): mixed
     {
-        $html = Blade::render(<<<'HTML'
-            <!DOCTYPE html>
-            <html lang="de">
-                
-            <head>
-                <meta charset="UTF-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>Vorschau</title>
-
-                <style>
-                    {!! $styles !!}
-                </style>
-            </head>
-            <body>
-                {!! $content !!}
-            </body>
-            </html>
-            HTML, ['content' => $this->ckeditorContent, 'styles' => file_get_contents(resource_path('css/ckeditor-pdf.css'))]);
-
-        $response = GotenbergApi::getPdf($html, DocumentVariables::forCKEditorPrint());
+        $response = Pdf::getPdfAsResponse($this->ckeditorContent, DocumentVariables::forCKEditorPrint());
 
         return response()->streamDownload(function () use ($response) {
             echo $response->getBody();
