@@ -29,6 +29,7 @@
 
                     this.editor = await createStudioEditor({
                         root,
+                        licenseKey: '{{ config('grapesjs.license-key') }}',
                         theme: 'light',
                         plugins: [
                             window.presetPrintable,
