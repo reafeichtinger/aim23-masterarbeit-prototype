@@ -4,9 +4,7 @@ namespace App\Livewire;
 
 use App\Actions\Task\SaveTaskAction;
 use App\Actions\TestRun\DeleteTestRunAction;
-use App\Actions\TestRun\SaveTestRunAction;
 use App\DTOs\TaskData;
-use App\DTOs\TestRunData;
 use App\Enums\EditorEnum;
 use App\Models\Task;
 use App\Models\TestRun;
@@ -94,13 +92,6 @@ class DoTestRun extends Component
             completed_at: $this->currentTask?->completed_at ?? Carbon::now(),
         ), task: $this->currentTask);
 
-        // Finish the Test run as we have reached the last step
-        if ($nextStep === 1 && $this->editor === 2) {
-            $this->completeTestRun();
-
-            return;
-        }
-
         // Fetch next task if exists
         $nextTask = Task::where('test_run_id', $this->testRunId)
             ->where('editor', $nextStep !== 1 ? $this->currentEditor : $this->currentEditor->other())
@@ -120,6 +111,13 @@ class DoTestRun extends Component
         // Put new content into session for next step
         Session::put("test-run.editor-{$nextEditor}.step-{$nextStep}.content", $nextTask->content);
         Session::save();
+
+        // Go to the survey when the next step is one
+        if ($nextStep === 1) {
+            $this->redirect(route('test-run.survey', ['testRun' => $this->testRun->hash, 'editor' => $this->editor]), navigate: true);
+
+            return;
+        }
 
         // Navigate to the next step
         $this->redirectRoute('test-run', [
@@ -144,22 +142,6 @@ class DoTestRun extends Component
         DeleteTestRunAction::handle($this->testRun);
 
         $this->success('Der Testlauf wurde abgebrochen und gelöscht.', redirectTo: route('home'));
-    }
-
-    public function completeTestRun(): void
-    {
-        // Set test run to completed
-        SaveTestRunAction::handle(new TestRunData(
-            initial_editor: $this->testRun->initial_editor,
-            started_at: $this->testRun->started_at,
-            completed_at: Carbon::now(),
-        ), testRun: $this->testRun);
-
-        // Remove test run from session
-        Session::forget('test-run');
-
-        // Redirect back to start
-        $this->success('Der Testlauf wurde erfolgreich abgeschlossen!', redirectTo: route('home'));
     }
 
     #endregion Actions

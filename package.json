@@ -9,6 +9,7 @@
         "@fontsource-variable/lexend-deca": "^5.2.10",
         "@grapesjs/studio-sdk": "^1.0.56",
         "@grapesjs/studio-sdk-plugins": "^1.0.30",
+        "@jackwh/alpine-confetti": "^1.1.0",
         "autoprefixer": "^10.4.20",
         "axios": "^1.7.4",
         "concurrently": "^9.0.1",

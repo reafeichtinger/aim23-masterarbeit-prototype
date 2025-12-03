@@ -59,6 +59,9 @@
                         <x-menu-item title="Aufgabe 5" :disabled="$currentEditor < 2 ? $currentStep < 5 : false"
                             :link="$testRun ? route('test-run', ['testRun' => $testRun->hash, 'editor' => 1, 'step' => 5]) : null" />
 
+                        <x-menu-item title="Befragung" :disabled="$currentEditor < 2 ? true : false"
+                            :link="$testRun ? route('test-run.survey', ['testRun' => $testRun->hash, 'editor' => 1]) : null" />
+
                     </x-menu-sub>
 
                     {{-- Editor 2 --}}
@@ -78,6 +81,10 @@
 
                         <x-menu-item title="Aufgabe 5" :disabled="$currentEditor !== 2 || $currentStep < 5"
                             :link="$testRun ? route('test-run', ['testRun' => $testRun->hash, 'editor' => 2, 'step' => 5]) : null" />
+
+                        <x-menu-item title="Befragung" :disabled="$currentEditor !== 2 || $currentStep !== 5" :link="$testRun
+                            ? route('test-run.survey', ['testRun' => $testRun->hash, 'editor' => 2])
+                            : null" />
 
                     </x-menu-sub>
 

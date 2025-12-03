@@ -25,6 +25,11 @@ class TestRun extends Model
         return $this->hasMany(Task::class);
     }
 
+    public function surveys(): HasMany
+    {
+        return $this->hasMany(Survey::class);
+    }
+
     #endregion Relations
     #region Attributes
 

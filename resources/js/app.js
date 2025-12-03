@@ -3,12 +3,15 @@ import './grapes.js';
 import './ckeditor5.js';
 
 import { Livewire, Alpine } from '../../vendor/livewire/livewire/dist/livewire.esm';
+import AlpineConfetti from '@jackwh/alpine-confetti';
 
 /* 
  * Global Alpine Data
  */
 
 document.addEventListener('alpine:init', () => {
+    AlpineConfetti(window.Alpine);
+
     // Countdown
     Alpine.data('countdown', (expiresData) => ({
         seconds: '00',

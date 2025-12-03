@@ -8,7 +8,7 @@
         {{-- Loading spinner - will be removed when toolbar is initialized --}}
         <x-loading class="text-primary self-center place-self-center" />
         {{-- Print pdf button --}}
-        <x-button class="absolute -bottom-14 right-2 btn-ghost btn-square" wire:click="print" icon="o-printer" spinner
+        <x-button class="absolute -bottom-13 right-2 btn-ghost btn-square" wire:click="print" icon="o-printer" spinner
             tooltip-left="PDF Datei generieren" />
     </div>
     {{-- Editor background --}}
@@ -107,7 +107,9 @@
                     },
                     menuBar: {
                         isVisible: true,
-                        removeItems: ['menuBar:exportPdf', 'menuBar:fontFamily'],
+                        removeItems: ['menuBar:exportPdf', 'menuBar:fontFamily', 'menuBar:insertImage',
+                            'menuBar:mediaEmbed'
+                        ],
                     },
                     toolbar: [
                         'insertTemplate',
@@ -135,11 +137,11 @@
                         },
                         '|',
                         'link',
-                        'insertImage',
+                        // 'insertImage',
                         'insertTable',
                         'insertTableLayout',
                         'blockQuote',
-                        'mediaEmbed',
+                        // 'mediaEmbed',
                         '|',
                         'bulletedList',
                         'numberedList',
