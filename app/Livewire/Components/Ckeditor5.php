@@ -48,6 +48,18 @@ class Ckeditor5 extends Component
         return DocumentVariables::forCKEditor();
     }
 
+    public function getFooter(): string
+    {
+        return view('documents.ckeditor.ckeditor-footer')->render();
+    }
+
+    public function getDoubleLine(): string
+    {
+        return <<<'HTML'
+            <div style="border-top: 3px double black;width:100%;height:0px;"></div>
+        HTML;
+    }
+
     public function getVenuzleLogo(bool $base64 = false): string
     {
         return $base64 ?

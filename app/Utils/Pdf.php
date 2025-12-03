@@ -17,7 +17,7 @@ class Pdf
             Gotenberg::chromium(config('gotenberg.gotenberg_api_url'))
                 ->pdf()
                 ->paperSize(8.27, 11.7) // A4 Format
-                ->margins(top: '2cm', right: '2cm', bottom: '2cm', left: '2cm')
+                ->margins(top: 0, right: 0, bottom: 0, left: 0) // Set via css
                 ->assets(Stream::string('style.css', file_get_contents(resource_path('css/ckeditor-pdf.css'))))
                 ->html(Stream::string('index.html', $html))
         );
@@ -35,8 +35,8 @@ class Pdf
         return view(
             match ($editor) {
                 EditorEnum::GRAPESJS => 'grapesjs-pdf',
-                EditorEnum::CKEDITOR => 'ckeditor-pdf',
-                default => 'ckeditor-pdf',
+                EditorEnum::CKEDITOR => 'documents.ckeditor.ckeditor-pdf',
+                default => 'documents.ckeditor.ckeditor-pdf',
             },
             ['content' => $html, 'css' => file_get_contents(resource_path('css/ckeditor-pdf.css'))]
         )->render();

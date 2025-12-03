@@ -22,3 +22,19 @@
 .ck.ck-menu-bar__menu__button {
     @apply !bg-base-200 hover:bg-base-300!
 }
+
+.ckeditor-background {
+    @apply relative w-full border-(length:--border) border-neutral rounded-field mx-auto bg-base-200 py-2 text-[12pt]
+}
+
+.ckeditor-content {
+    @apply relative h-[297mm] w-[210mm] mx-auto bg-white
+}
+
+.ckeditor-content * {
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.ckeditor-content h2 {
+    @apply text-[2rem] text-black font-bold
+}

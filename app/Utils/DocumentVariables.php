@@ -56,7 +56,7 @@ class DocumentVariables
 
     public static function forCKEditorPrint(): array
     {
-        return Collection::make(static::forCKEditor()['definitions'])
+        return Collection::make(static::forCKEditor())
             ->pluck('definitions')
             ->flatten(1)
             ->filter(fn ($item) => isset($item['id'], $item['defaultValue']))
@@ -80,8 +80,8 @@ class DocumentVariables
                         'id' => 'invoice-table',
                         'label' => trans('variables.invoice-table'),
                         'type' => 'block',
-                        'height' => 143,
-                        'defaultValue' => '', // TODO: Table HTML
+                        'height' => 93,
+                        'defaultValue' => view('documents.ckeditor.ckeditor-table')->render(),
                     ];
 
                     continue;
@@ -89,10 +89,10 @@ class DocumentVariables
 
                 $values = Arr::wrap($values);
                 foreach ($values as $index => $value) {
-
+                    $id = "$group-$key" . (is_int($index) ? '' : "-$index");
                     $definitions[] = [
-                        'id' => "$group-$key" . (is_int($index) ? '' : "-$index"),
-                        'label' => trans("variables.$group-$key"),
+                        'id' => $id,
+                        'label' => trans("variables.$id"),
                         'defaultValue' => $value,
                     ];
 
@@ -107,6 +107,6 @@ class DocumentVariables
             ];
         }
 
-        return ['definitions' => $result];
+        return $result;
     }
 }

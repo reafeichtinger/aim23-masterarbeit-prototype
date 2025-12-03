@@ -1,23 +1,22 @@
 <div wire:ignore class="w-full flex flex-col items-center justify-start">
     <div
-        class="w-full border-(length:--border) border-neutral bg-base-200 rounded-field mb-1 min-h-19 flex flex-col place-content-center">
+        class="sticky top-0 z-10 w-full border-(length:--border) border-neutral bg-base-200 rounded-field mb-1 min-h-19 flex flex-col place-content-center">
         {{-- Menubar injection point -> will be filled --}}
         <div id="ckeditor_menubar_{{ $name }}" class="w-full"></div>
         {{-- Toolbar injection point -> will be filled --}}
         <div id="ckeditor_toolbar_{{ $name }}" class="w-full mb-1"></div>
         {{-- Loading spinner - will be removed when toolbar is initialized --}}
         <x-loading class="text-primary self-center place-self-center" />
+        {{-- Print pdf button --}}
+        <x-button class="absolute -bottom-14 right-2 btn-ghost btn-square" wire:click="print" icon="o-printer" spinner
+            tooltip-left="PDF Datei generieren" />
     </div>
     {{-- Editor background --}}
-    <div class="relative w-full border-(length:--border) border-neutral rounded-field mx-auto bg-base-200 py-2"
-        style="font-size: 12pt">
+    <div class="ckeditor-background">
         {{-- Editor injection point -> will be hidden and the editable box will be appended below --}}
-        <div class="h-[297mm] w-[210mm] mx-auto bg-white" id="ckeditor_{{ $name }}">
+        <div class="ckeditor-content" id="ckeditor_{{ $name }}">
             {!! $this->ckeditorContent !!}
         </div>
-        {{-- Print pdf button --}}
-        <x-button class="absolute top-2 right-2 btn-ghost btn-square" wire:click="print" icon="o-printer" spinner
-            tooltip-left="PDF Datei generieren" />
     </div>
 </div>
 
@@ -53,6 +52,7 @@
                 FontColor,
                 FontFamily,
                 FontSize,
+                GeneralHtmlSupport,
                 Heading,
                 ImageBlock,
                 ImageCaption,
@@ -107,18 +107,16 @@
                     },
                     menuBar: {
                         isVisible: true,
-                        removeItems: ['menuBar:exportPdf'],
+                        removeItems: ['menuBar:exportPdf', 'menuBar:fontFamily'],
                     },
                     toolbar: [
                         'insertTemplate',
                         'insertMergeField',
-                        'previewMergeFields',
                         'undo',
                         'redo',
                         '|',
                         'heading',
                         '|',
-                        'fontFamily',
                         'fontSize',
                         'fontColor',
                         'fontBackgroundColor',
@@ -166,6 +164,7 @@
                         FontColor,
                         FontFamily,
                         FontSize,
+                        GeneralHtmlSupport,
                         Heading,
                         ImageBlock,
                         ImageCaption,
@@ -207,6 +206,19 @@
                         Underline,
                         Undo,
                     ],
+                    htmlSupport: {
+                        allow: [{
+                            name: /.*/,
+                            attributes: true,
+                            classes: true,
+                            styles: true
+                        }],
+                    },
+                    fontFamily: {
+                        options: [
+                            'Times New Roman, Times, serif',
+                        ],
+                    },
                     table: {
                         contentToolbar: [
                             'tableColumn',
@@ -230,13 +242,34 @@
                     },
                     template: {
                         definitions: [{
-                            title: 'Firmenlogo',
-                            description: 'Das Logo der Venuzle GmbH',
-                            icon: @js($this->getVenuzleLogo()),
-                            data: @js($this->getVenuzleLogo(true)),
-                        }, ],
+                                title: 'Firmenlogo',
+                                description: 'Das Logo der Venuzle GmbH.',
+                                icon: @js($this->getVenuzleLogo()),
+                                data: @js($this->getVenuzleLogo(true)),
+                            },
+                            {
+                                title: 'Doppelte Linie',
+                                description: 'Eine Doppelte Trennlinie für den Tabellenfooter.',
+                                data: @js($this->getDoubleLine()),
+                            },
+                            {
+                                title: 'Footer',
+                                description: 'Der Container für den Footer.',
+                                data: @js($this->getFooter()),
+                            },
+                        ],
                     },
-                    mergeFields: @js($this->getMergeFields()),
+                    mergeFields: {
+                        previewHtmlValues: true,
+                        previewModes: ['$defaultValues'],
+                        definitions: @js($this->getMergeFields()),
+                        sanitizeHtml(inputHtml) {
+                            return {
+                                html: inputHtml,
+                                hasChanged: false
+                            };
+                        },
+                    },
                 })
                 .then(editor => {
                     window.ckeditor = editor;

@@ -8,6 +8,12 @@
     box-sizing: border-box;
 }
 
+h2 {
+    font-size: 2rem;
+    color: black;
+    font-weight: bold;
+}
+
 .mention {
     background: var(--ck-content-color-mention-background);
     color: var(--ck-content-color-mention-text);
@@ -58,7 +64,7 @@ pre code {
     --ck-content-color-mention-background: rgba(153, 0, 48, .1);
     --ck-content-color-mention-text: #990030;
 
-    --ck-content-font-family: Helvetica, Arial, Tahoma, Verdana, Sans-Serif;
+    --ck-content-font-family: 'Times New Roman', Times, serif;
     --ck-content-font-size: medium;
     --ck-content-font-color: #000;
     --ck-content-line-height: 1.3;
@@ -69,13 +75,24 @@ pre code {
     --ck-content-font-size-big: 1.4em;
     --ck-content-font-size-huge: 1.8em;
 
+    --ck-content-highlight-marker-yellow: #fdfd77;
+    --ck-content-highlight-marker-green: #62f962;
+    --ck-content-highlight-marker-pink: #fc7899;
+    --ck-content-highlight-marker-blue: #72ccfd;
+    --ck-content-highlight-pen-red: #e71313;
+    --ck-content-highlight-pen-green: #128a00;
+
     color: var(--ck-content-font-color);
     font-family: var(--ck-content-font-family);
     font-size: var(--ck-content-font-size);
     line-height: var(--ck-content-line-height);
     word-break: var(--ck-content-word-break);
+}
 
-    font-family: 'Times New Roman', Times, serif;
+body {
+    position: relative;
+    min-height: 297mm;
+    padding: 2cm;
 }
 
 .text-tiny {
@@ -92,15 +109,6 @@ pre code {
 
 .text-huge {
     font-size: var(--ck-content-font-size-huge);
-}
-
-:root {
-    --ck-content-highlight-marker-yellow: #fdfd77;
-    --ck-content-highlight-marker-green: #62f962;
-    --ck-content-highlight-marker-pink: #fc7899;
-    --ck-content-highlight-marker-blue: #72ccfd;
-    --ck-content-highlight-pen-red: #e71313;
-    --ck-content-highlight-pen-green: #128a00;
 }
 
 .marker-yellow {
