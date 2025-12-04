@@ -62,7 +62,7 @@
                                 return [{
                                     "name": "Venuzle Logo",
                                     "type": "image",
-                                    "src": "http://localhost:8000/storage/assets/venuzle-logo.png",
+                                    "src": "{{ asset('storage/assets/venuzle-logo.png') }}",
                                 }];
                             },
                         },
@@ -73,7 +73,7 @@
                                 assets: [{
                                     "name": "Venuzle Logo",
                                     "type": "image",
-                                    "src": "http://localhost:8000/storage/assets/venuzle-logo.png",
+                                    "src": "{{ asset('storage/assets/venuzle-logo.png') }}",
                                 }],
                                 styles: [],
                                 pages: [{
