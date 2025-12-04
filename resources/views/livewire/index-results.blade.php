@@ -5,6 +5,7 @@
         <x-header title="Auswertung" subtitle="Hier sind alle bisher durchgeführten Testläufe." />
 
         @if ($this->unlocked)
+            {{-- Test run overview --}}
             <div class="border-(length:--border) border-neutral rounded-field overflow-hidden">
                 <x-table :headers="$this->testRunHeaders" :rows="$this->testRuns" show-empty-text
                     emptyText="Es wurden noch keine Testläufe aufgezeichnet..." :row-decoration="[
@@ -22,23 +23,31 @@
 
                     @scope('actions', $testRun)
                         <div class="flex flex-row justify-end items-center space-x-2">
+                            {{-- Deselect  --}}
                             @if ($testRun->hash == session('test-run.hash'))
                                 <x-button icon="o-stop" wire:click="deselectTestRun" wire:loading.attr="disabled"
                                     class="btn-sm btn-square btn-ghost text-warning" tooltip-left="Testlauf abwählen" />
                             @endif
+                            {{-- Continue --}}
                             <x-button icon="o-play" wire:click="continueTestRun('{{ $testRun->hash }}')"
                                 wire:loading.attr="disabled" class="btn-sm btn-square btn-ghost text-success"
                                 tooltip-left="Testlauf laden" />
+                            {{-- Delete --}}
                             <x-button icon="o-trash"
                                 x-on:click="$dispatch('toggle-delete-confirmation', { hash: '{{ $testRun->hash }}' })"
                                 wire:loading.attr="disabled" class="btn-sm btn-square btn-ghost text-error"
                                 tooltip-left="Testlauf löschen" />
+                            {{-- Details --}}
+                            <a href="{{ route('show-result', ['testRun' => $testRun->hash]) }}" class="btn btn-link">
+                                Details
+                            </a>
                         </div>
                     @endscope
 
                 </x-table>
             </div>
         @else
+            {{-- Password prompt --}}
             <x-empty-state title="Um auf die Auswertung zuzugreifen musst du zuerst das Passwort eingeben."
                 icon="o-lock-closed">
                 <x-slot:subtitle>
