@@ -4,38 +4,55 @@
     <div class="card px-6 py-4 space-y-4">
         <x-header title="Auswertung" subtitle="Hier sind alle bisher durchgeführten Testläufe." />
 
-        <div class="border-(length:--border) border-neutral rounded-field overflow-hidden">
-            <x-table :headers="$this->testRunHeaders" :rows="$this->testRuns" show-empty-text
-                emptyText="Es wurden noch keine Testläufe aufgezeichnet..." :row-decoration="[
-                    'bg-primary/10 hover:bg-primary/15' => fn($testRun) => $testRun->hash == session('test-run.hash'),
-                ]">
+        @if ($this->unlocked)
+            <div class="border-(length:--border) border-neutral rounded-field overflow-hidden">
+                <x-table :headers="$this->testRunHeaders" :rows="$this->testRuns" show-empty-text
+                    emptyText="Es wurden noch keine Testläufe aufgezeichnet..." :row-decoration="[
+                        'bg-primary/10 hover:bg-primary/15' => fn($testRun) => $testRun->hash ==
+                            session('test-run.hash'),
+                    ]">
 
-                @scope('cell_started_at', $testRun)
-                    {{ App\Utils\DateX::formatDateTime($testRun->started_at, withSeconds: true) }}
-                @endscope
+                    @scope('cell_started_at', $testRun)
+                        {{ App\Utils\DateX::formatDateTime($testRun->started_at, withSeconds: true) }}
+                    @endscope
 
-                @scope('cell_completed_at', $testRun)
-                    {{ App\Utils\DateX::formatDateTime($testRun->completed_at, withSeconds: true) }}
-                @endscope
+                    @scope('cell_completed_at', $testRun)
+                        {{ App\Utils\DateX::formatDateTime($testRun->completed_at, withSeconds: true) }}
+                    @endscope
 
-                @scope('actions', $testRun)
-                    <div class="flex flex-row justify-end items-center space-x-2">
-                        @if ($testRun->hash == session('test-run.hash'))
-                            <x-button icon="o-stop" wire:click="deselectTestRun" wire:loading.attr="disabled"
-                                class="btn-sm btn-square btn-ghost text-warning" tooltip-left="Testlauf abwählen" />
-                        @endif
-                        <x-button icon="o-play" wire:click="continueTestRun('{{ $testRun->hash }}')"
-                            wire:loading.attr="disabled" class="btn-sm btn-square btn-ghost text-success"
-                            tooltip-left="Testlauf laden" />
-                        <x-button icon="o-trash"
-                            x-on:click="$dispatch('toggle-delete-confirmation', { hash: '{{ $testRun->hash }}' })"
-                            wire:loading.attr="disabled" class="btn-sm btn-square btn-ghost text-error"
-                            tooltip-left="Testlauf löschen" />
+                    @scope('actions', $testRun)
+                        <div class="flex flex-row justify-end items-center space-x-2">
+                            @if ($testRun->hash == session('test-run.hash'))
+                                <x-button icon="o-stop" wire:click="deselectTestRun" wire:loading.attr="disabled"
+                                    class="btn-sm btn-square btn-ghost text-warning" tooltip-left="Testlauf abwählen" />
+                            @endif
+                            <x-button icon="o-play" wire:click="continueTestRun('{{ $testRun->hash }}')"
+                                wire:loading.attr="disabled" class="btn-sm btn-square btn-ghost text-success"
+                                tooltip-left="Testlauf laden" />
+                            <x-button icon="o-trash"
+                                x-on:click="$dispatch('toggle-delete-confirmation', { hash: '{{ $testRun->hash }}' })"
+                                wire:loading.attr="disabled" class="btn-sm btn-square btn-ghost text-error"
+                                tooltip-left="Testlauf löschen" />
+                        </div>
+                    @endscope
+
+                </x-table>
+            </div>
+        @else
+            <x-empty-state title="Um auf die Auswertung zuzugreifen musst du zuerst das Passwort eingeben."
+                icon="o-lock-closed">
+                <x-slot:subtitle>
+                    <div class="text-left w-1/3 mt-6">
+
+                        <x-password label="Passwort" class="text-left w-full" wire:model="password" />
+
                     </div>
-                @endscope
 
-            </x-table>
-        </div>
+                    <x-button label="Entsperren" icon-right="o-lock-open" class="btn-primary mt-6"
+                        wire:click="unlock" />
+                </x-slot:subtitle>
+            </x-empty-state>
+        @endif
     </div>
 
     {{-- Delete confirmation --}}

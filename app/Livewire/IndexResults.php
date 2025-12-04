@@ -7,14 +7,27 @@ use App\Models\TestRun;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Session;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
 use Vinkla\Hashids\Facades\Hashids;
 
 class IndexResults extends Component
 {
+    #[Locked]
+    public bool $unlocked = false;
+
+    public ?string $password = null;
     public ?string $deleteHash = null;
     public bool $showDeleteConfirmation = false;
 
+    #region Livewire
+
+    public function mount(): void
+    {
+        $this->unlocked = config('app.admin-password') ? false : true;
+    }
+
+    #endregion Livewire
     #region Properties
 
     #[Computed]
@@ -36,6 +49,28 @@ class IndexResults extends Component
 
     #endregion Properties
     #region Actions
+
+    public function unlock(): void
+    {
+        // Prevent password spam
+        if (Session::get('index-results.password-tries', 0) > 4) {
+            $this->error('Du hast zu oft das falsche Passwort eingegeben.');
+
+            return;
+        }
+
+        // Unlock if password matches
+        if ($this->password === config('app.admin-password')) {
+            $this->unlocked = true;
+            $this->password = null;
+
+            return;
+        }
+
+        // Notify and track wrong password tries
+        $this->warning('Das angegebene Passwort is inkorrekt.');
+        Session::increment('index-results.password-tries', 1);
+    }
 
     public function continueTestRun(string $hash): void
     {
