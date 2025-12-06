@@ -141,7 +141,7 @@ class ShowResult extends Component
                 editor: str_contains($input, EditorEnum::CKEDITOR->value) ? EditorEnum::CKEDITOR : EditorEnum::GRAPESJS,
                 pixels: (int) ($diff[0] ?? 0),
                 percent: (float) ($diff[1] ?? 0.0),
-                lines: ($diff[2] ?? null) ? explode(',', str_replace(PHP_EOL, '', ($diff[2] ?? ''))) : null,
+                lines: count(($diff[2] ?? null) ? explode(',', str_replace(PHP_EOL, '', ($diff[2] ?? ''))) : []),
             ), $this->testRun->odiffResults->where('editor', $editor)->first());
         }
 

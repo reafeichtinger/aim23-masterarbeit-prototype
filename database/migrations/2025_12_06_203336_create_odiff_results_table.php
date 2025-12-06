@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('editor'); // App\Enums\EditorEnum
             $table->integer('pixels')->default(0);
             $table->decimal('percent')->default(0.00);
-            $table->json('lines')->nullable()->default(null);
+            $table->integer('lines')->default(0);
             $table->timestamps();
 
             $table->foreign('test_run_id')->references('id')->on('test_runs')->cascadeOnDelete()->cascadeOnUpdate();

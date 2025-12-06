@@ -197,7 +197,7 @@
                                     color="text-primary"
                                     class="col-span-3 bg-base-200 border-(length:--border) border-neutral" />
 
-                                <x-stat title="Abweichende Zeilen" :value="number_format(count($odiff->lines ?? []), 0, ',', '.')" icon="o-bars-4"
+                                <x-stat title="Abweichende Zeilen" :value="number_format($odiff->lines, 0, ',', '.')" icon="o-bars-4"
                                     color="text-primary"
                                     class="col-span-3 bg-base-200 border-(length:--border) border-neutral" />
 

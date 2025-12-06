@@ -12,6 +12,6 @@ class OdiffResultData
         public ?EditorEnum $editor = null,
         public ?int $pixels = null,
         public ?float $percent = null,
-        public ?array $lines = null,
+        public ?int $lines = null,
     ) {}
 }

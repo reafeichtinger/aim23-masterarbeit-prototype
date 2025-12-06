@@ -16,7 +16,7 @@ class OdiffResult extends Model
         'editor' => EditorEnum::class,
         'pixels' => 'integer',
         'percent' => 'float',
-        'lines' => 'array',
+        'lines' => 'integer',
     ];
 
     public function testRun(): BelongsTo
