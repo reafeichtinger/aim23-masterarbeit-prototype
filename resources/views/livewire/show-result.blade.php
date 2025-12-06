@@ -125,7 +125,7 @@
                                             {{ $question }}
                                         </td>
                                         <td class="text-base text-primary">
-                                            {{ $survey->answers["question_$index"] ?? '-' }}
+                                            {{ $survey->answers['question_' . ($index + 1)] ?? '-' }}
                                         </td>
                                     </tr>
                                 @endforeach
