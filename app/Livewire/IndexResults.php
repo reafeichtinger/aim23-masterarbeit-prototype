@@ -38,6 +38,7 @@ class IndexResults extends Component
             ['key' => 'initial_editor', 'label' => 'Start Editor'],
             ['key' => 'started_at', 'label' => 'Startzeitpunkt'],
             ['key' => 'completed_at', 'label' => 'Endzeitpunkt'],
+            ['key' => 'duration', 'label' => 'Dauer'],
         ];
     }
 
@@ -105,6 +106,10 @@ class IndexResults extends Component
     {
         if ($this->deleteHash) {
             DeleteTestRunAction::handle($this->testRuns->where('id', Hashids::decode($this->deleteHash)[0] ?? 0)->first());
+
+            if ($this->deleteHash == Session::get('test-run.hash', null)) {
+                Session::remove('test-run');
+            }
 
             $this->success('Der Testlauf wurde gelöscht.');
             $this->redirectReload();

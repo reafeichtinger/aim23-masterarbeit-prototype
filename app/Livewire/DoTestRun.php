@@ -152,11 +152,13 @@ class DoTestRun extends Component
         ], navigate: false);
     }
 
-    public function deleteTestRun(): void
+    public function deleteTestRun(): mixed
     {
         DeleteTestRunAction::handle($this->testRun);
 
-        $this->success('Der Testlauf wurde abgebrochen und gelöscht.', redirectTo: route('home'));
+        $this->success('Der Testlauf wurde abgebrochen und gelöscht.');
+
+        return redirect()->route('home');
     }
 
     #endregion Actions

@@ -162,7 +162,7 @@ class DoTestRunSurvey extends Component
         ], navigate: false);
     }
 
-    public function completeTestRun(): void
+    public function completeTestRun(): mixed
     {
         // Set test run to completed
         SaveTestRunAction::handle(new TestRunData(
@@ -175,14 +175,18 @@ class DoTestRunSurvey extends Component
         Session::forget('test-run');
 
         // Redirect back to start
-        $this->success('Der Testlauf wurde erfolgreich abgeschlossen!', redirectTo: route('home', ['completed' => true, 'hash' => $this->testRun->hash]));
+        $this->success('Der Testlauf wurde erfolgreich abgeschlossen!');
+
+        return redirect()->route('home', ['completed' => true, 'hash' => $this->testRun->hash]);
     }
 
-    public function deleteTestRun(): void
+    public function deleteTestRun(): mixed
     {
         DeleteTestRunAction::handle($this->testRun);
 
-        $this->success('Der Testlauf wurde abgebrochen und gelöscht.', redirectTo: route('home'));
+        $this->success('Der Testlauf wurde abgebrochen und gelöscht.');
+
+        return redirect()->route('home');
     }
 
     #endregion Actions

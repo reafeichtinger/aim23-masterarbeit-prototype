@@ -58,13 +58,16 @@ class Home extends Component
             completed_at: null,
         ));
 
-        return $this->success('Der Testlauf wurde gestartet.', redirectTo: route('test-run', ['testRun' => $testRun->hash, 'editor' => 1, 'step' => 1]));
+        $this->success('Der Testlauf wurde gestartet.');
+
+        return redirect()->route('test-run', ['testRun' => $testRun->hash, 'editor' => 1, 'step' => 1]);
     }
 
-    public function resetTestRun(): void
+    public function resetTestRun(): mixed
     {
         Session::remove('test-run');
-        $this->redirect(route('home'), navigate: false);
+
+        return redirect()->route('home');
     }
 
     #endregion Actions

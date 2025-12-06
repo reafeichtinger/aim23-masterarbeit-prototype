@@ -1,7 +1,7 @@
 <x-container>
 
     {{-- Main content --}}
-    <div class="card px-6 py-4 space-y-4">
+    <div class="card px-6 py-4 space-y-4" @attr('wire:poll.5000ms', $this->testRuns->where('completed_at', null)->count())>
         <x-header title="Auswertung" subtitle="Hier sind alle bisher durchgeführten Testläufe.">
             <x-slot:actions>
                 @if (config('app.admin-password') && $this->unlocked)
@@ -25,6 +25,10 @@
 
                     @scope('cell_completed_at', $testRun)
                         {{ App\Utils\DateX::formatDateTime($testRun->completed_at, withSeconds: true) }}
+                    @endscope
+
+                    @scope('cell_duration', $testRun)
+                        {{ gmdate('H\h i\m s\s', $testRun->started_at?->diffInSeconds($testRun->completed_at)) }}
                     @endscope
 
                     @scope('actions', $testRun)

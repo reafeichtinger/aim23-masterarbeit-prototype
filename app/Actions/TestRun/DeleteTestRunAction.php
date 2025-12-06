@@ -10,6 +10,7 @@ class DeleteTestRunAction
     public static function handle(?TestRun $testRun = null): ?bool
     {
         $testRun?->tasks()?->delete();
+        $testRun?->odiffResults()?->delete();
 
         Session::forget('test-run');
 
