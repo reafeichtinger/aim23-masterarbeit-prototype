@@ -2,8 +2,10 @@
 
 namespace App\Livewire;
 
+use App\Actions\GrapesjsData\SaveGrapesjsDataAction;
 use App\Actions\Task\SaveTaskAction;
 use App\Actions\TestRun\DeleteTestRunAction;
+use App\DTOs\GrapesjsDataData;
 use App\DTOs\TaskData;
 use App\Enums\EditorEnum;
 use App\Models\Task;
@@ -12,6 +14,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Session;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Locked;
+use Livewire\Attributes\On;
 use Vinkla\Hashids\Facades\Hashids;
 
 class DoTestRun extends Component
@@ -41,10 +44,15 @@ class DoTestRun extends Component
             abort(404);
         }
 
-        // Load the editor content
-        $this->content = Session::get("test-run.editor-{$this->editor}.step-{$this->step}.content",
-            default: $this->currentTask?->content ?? $this->testRun->currentEditor->defaultContent()
-        );
+        // Load the editor content from session if exists
+        if (Session::has("test-run.editor-{$this->editor}.step-{$this->step}.content")) {
+            $this->content = Session::get("test-run.editor-{$this->editor}.step-{$this->step}.content");
+        }
+
+        // Load content from task or set default
+        if ($this->content == null || (is_string($this->content) && strlen($this->content) == 0) || $this->content == $this->currentEditor->defaultContent()) {
+            $this->content = $this->currentTask?->content ?? $this->testRun->currentEditor->defaultContent();
+        }
     }
 
     #endregion Livewire
@@ -77,8 +85,15 @@ class DoTestRun extends Component
     #endregion Properties
     #region Actions
 
-    public function nextStep(): void
+    public function nextStep(bool $skipEvent = false): void
     {
+        // For grapesjs we first need to get the html and css via javascript
+        if ($this->currentEditor == EditorEnum::GRAPESJS && !$skipEvent) {
+            $this->dispatch('get-grapesjs-html');
+
+            return;
+        }
+
         $nextStep = $this->step == 5 ? 1 : $this->step + 1;
         $nextEditor = $this->editor + ($this->step == 5 ? 1 : 0);
 
@@ -114,7 +129,7 @@ class DoTestRun extends Component
 
         // Go to the survey when the next step is one
         if ($nextStep === 1) {
-            $this->redirect(route('test-run.survey', ['testRun' => $this->testRun->hash, 'editor' => $this->editor]), navigate: true);
+            $this->redirect(route('test-run.survey', ['testRun' => $this->testRun->hash, 'editor' => $this->editor]), navigate: false);
 
             return;
         }
@@ -124,7 +139,7 @@ class DoTestRun extends Component
             'testRun' => $this->testRun->hash,
             'editor' => $nextEditor,
             'step' => $nextStep,
-        ], navigate: true);
+        ], navigate: false);
     }
 
     public function prevStep(): void
@@ -134,7 +149,7 @@ class DoTestRun extends Component
             'testRun' => $this->testRun->hash,
             'editor' => $this->editor - ($this->step == 1 ? 1 : 0),
             'step' => $this->step == 1 ? 5 : $this->step - 1,
-        ], navigate: true);
+        ], navigate: false);
     }
 
     public function deleteTestRun(): void
@@ -151,6 +166,18 @@ class DoTestRun extends Component
     {
         Session::put("test-run.editor-{$this->editor}.step-{$this->step}.content", $newContent);
         Session::save();
+    }
+
+    #[On('grapesjs-html')]
+    public function onGrapesJsHtml(string $html, string $css): void
+    {
+        SaveGrapesjsDataAction::handle(new GrapesjsDataData(
+            task: $this->currentTask,
+            html: $html,
+            css: $css,
+        ), $this->currentTask->grapesJsData);
+
+        $this->nextStep(true);
     }
 
     #endregion Listeners

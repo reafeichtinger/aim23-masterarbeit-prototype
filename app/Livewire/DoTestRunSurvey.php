@@ -149,7 +149,7 @@ class DoTestRunSurvey extends Component
             'testRun' => $this->testRun->hash,
             'editor' => 2,
             'step' => 1,
-        ], navigate: true);
+        ], navigate: false);
     }
 
     public function prevStep(): void
@@ -159,7 +159,7 @@ class DoTestRunSurvey extends Component
             'testRun' => $this->testRun->hash,
             'editor' => $this->editor,
             'step' => 5,
-        ], navigate: true);
+        ], navigate: false);
     }
 
     public function completeTestRun(): void

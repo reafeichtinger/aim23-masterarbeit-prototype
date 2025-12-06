@@ -1,7 +1,6 @@
 <div x-data="grapesjsComponent({
-    wire: $wire,
     name: @js($name),
-    initialContent: @js($grapesjsContent),
+    initialContent: @js($this->grapesjsContent),
 })" x-on:livewire:navigate.window="destroy()" wire:ignore>
     <div id="grapesjs_{{ $name }}" class="min-h-[90vh]"></div>
 </div>
@@ -9,7 +8,6 @@
 @script
     <script>
         window.grapesjsComponent = function({
-            wire,
             name,
             initialContent
         }) {
@@ -424,7 +422,7 @@
                             }) => {
                                 clearTimeout(this.inputDelay);
                                 this.inputDelay = setTimeout(() => {
-                                    wire.set('grapesjsContent', JSON.stringify(
+                                    $wire.set('grapesjsContent', JSON.stringify(
                                         editor.getProjectData()
                                     ));
                                 }, 400);
@@ -433,6 +431,7 @@
                             onLoad: ({
                                 editor
                             }) => {
+                                this.editor = editor;
                                 const sm = editor.StyleManager;
                                 const unitsToAdd = ['cm', 'mm'];
 
@@ -475,13 +474,20 @@
                             }
                         }
                     });
+
+                    document.addEventListener('get-grapesjs-html', () => {
+                        $dispatch('grapesjs-html', {
+                            html: this.editor.getHtml(),
+                            css: this.editor.getCss(),
+                        })
+                    });
                 },
 
                 destroy() {
                     clearTimeout(this.inputDelay);
 
                     if (this.editor) {
-                        wire.set(
+                        $wire?.set(
                             'grapesjsContent',
                             JSON.stringify(this.editor.getProjectData())
                         );

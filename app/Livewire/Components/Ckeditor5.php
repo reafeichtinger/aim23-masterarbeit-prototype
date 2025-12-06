@@ -10,15 +10,8 @@ use Livewire\Component;
 
 class Ckeditor5 extends Component
 {
-    /**
-     * The content of the CKEditor5 instance.
-     * This property is bound to Livewire and will trigger updates when changed.
-     * Made public so Livewire can serialize and bind it to the frontend.
-     *
-     * @var array<string, string> Content sections, e.g., ['main' => '<p>Initial content</p>']
-     */
     #[Modelable]
-    public mixed $ckeditorContent = null;
+    public ?string $ckeditorContent = null;
 
     public string $name = 'field';
     public bool $debug = false;
@@ -33,7 +26,11 @@ class Ckeditor5 extends Component
 
     public function print(): mixed
     {
-        $response = Pdf::getPdfAsResponse($this->ckeditorContent, DocumentVariables::forCKEditorPrint());
+        $response = Pdf::getPdfAsResponse(
+            html: $this->ckeditorContent,
+            css: file_get_contents(resource_path('css/ckeditor-pdf.css')),
+            data: DocumentVariables::forCKEditorPrint(),
+        );
 
         return response()->streamDownload(function () use ($response) {
             echo $response->getBody();

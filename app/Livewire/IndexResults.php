@@ -24,7 +24,7 @@ class IndexResults extends Component
 
     public function mount(): void
     {
-        $this->unlocked = config('app.admin-password') ? false : true;
+        $this->unlocked = config('app.admin-password') ? Session::get('index-results.unlocked', false) : true;
     }
 
     #endregion Livewire
@@ -50,6 +50,14 @@ class IndexResults extends Component
     #endregion Properties
     #region Actions
 
+    public function lock(): void
+    {
+        $this->unlocked = false;
+        $this->password = null;
+        Session::put('index-results.unlocked', false);
+        Session::save();
+    }
+
     public function unlock(): void
     {
         // Prevent password spam
@@ -63,6 +71,9 @@ class IndexResults extends Component
         if ($this->password === config('app.admin-password')) {
             $this->unlocked = true;
             $this->password = null;
+
+            Session::put('index-results.unlocked', true);
+            Session::save();
 
             return;
         }

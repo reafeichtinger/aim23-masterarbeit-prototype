@@ -2,7 +2,13 @@
 
     {{-- Main content --}}
     <div class="card px-6 py-4 space-y-4">
-        <x-header title="Auswertung" subtitle="Hier sind alle bisher durchgeführten Testläufe." />
+        <x-header title="Auswertung" subtitle="Hier sind alle bisher durchgeführten Testläufe.">
+            <x-slot:actions>
+                @if (config('app.admin-password') && $this->unlocked)
+                    <x-button class="btn-sm btn-neutral" icon="o-lock-closed" label="Sperren" wire:click="lock" />
+                @endif
+            </x-slot:actions>
+        </x-header>
 
         @if ($this->unlocked)
             {{-- Test run overview --}}

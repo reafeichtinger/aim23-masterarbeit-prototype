@@ -12,6 +12,6 @@ class Component extends LivewireComponent
 
     public function redirectReload(): void
     {
-        $this->redirect(request()->header('Referer'), navigate: true);
+        $this->redirect(request()->header('Referer'), navigate: false);
     }
 }

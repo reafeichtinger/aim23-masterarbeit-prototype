@@ -30,6 +30,11 @@ class TestRun extends Model
         return $this->hasMany(Survey::class);
     }
 
+    public function odiffResults(): HasMany
+    {
+        return $this->hasMany(OdiffResult::class);
+    }
+
     #endregion Relations
     #region Attributes
 

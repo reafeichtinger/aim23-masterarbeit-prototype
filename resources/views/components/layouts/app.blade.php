@@ -36,7 +36,7 @@
                 class="h-full">
 
                 {{-- Introduction --}}
-                <x-menu-item title="Infos & Start" icon="o-information-circle" link="/" />
+                <x-menu-item title="Infos & Start" icon="o-information-circle" link="/" noWireNavigate />
 
                 {{-- Editors --}}
                 <div class="pt-0">
@@ -45,22 +45,28 @@
                     <x-menu-sub title="Editor 1" icon="o-h1" open :disabled="!$currentEditor">
 
                         <x-menu-item title="Aufgabe 1" :disabled="$currentEditor < 2 ? $currentStep < 1 : false"
-                            :link="$testRun ? route('test-run', ['testRun' => $testRun->hash, 'editor' => 1, 'step' => 1]) : null" />
+                            :link="$testRun ? route('test-run', ['testRun' => $testRun->hash, 'editor' => 1, 'step' => 1]) : null"
+                            noWireNavigate />
 
                         <x-menu-item title="Aufgabe 2" :disabled="$currentEditor < 2 ? $currentStep < 2 : false"
-                            :link="$testRun ? route('test-run', ['testRun' => $testRun->hash, 'editor' => 1, 'step' => 2]) : null" />
+                            :link="$testRun ? route('test-run', ['testRun' => $testRun->hash, 'editor' => 1, 'step' => 2]) : null"
+                            noWireNavigate />
 
                         <x-menu-item title="Aufgabe 3" :disabled="$currentEditor < 2 ? $currentStep < 3 : false"
-                            :link="$testRun ? route('test-run', ['testRun' => $testRun->hash, 'editor' => 1, 'step' => 3]) : null" />
+                            :link="$testRun ? route('test-run', ['testRun' => $testRun->hash, 'editor' => 1, 'step' => 3]) : null"
+                            noWireNavigate />
 
                         <x-menu-item title="Aufgabe 4" :disabled="$currentEditor < 2 ? $currentStep < 4 : false"
-                            :link="$testRun ? route('test-run', ['testRun' => $testRun->hash, 'editor' => 1, 'step' => 4]) : null" />
+                            :link="$testRun ? route('test-run', ['testRun' => $testRun->hash, 'editor' => 1, 'step' => 4]) : null"
+                            noWireNavigate />
 
                         <x-menu-item title="Aufgabe 5" :disabled="$currentEditor < 2 ? $currentStep < 5 : false"
-                            :link="$testRun ? route('test-run', ['testRun' => $testRun->hash, 'editor' => 1, 'step' => 5]) : null" />
+                            :link="$testRun ? route('test-run', ['testRun' => $testRun->hash, 'editor' => 1, 'step' => 5]) : null"
+                            noWireNavigate />
 
                         <x-menu-item title="Befragung" :disabled="$currentEditor < 2 ? true : false"
-                            :link="$testRun ? route('test-run.survey', ['testRun' => $testRun->hash, 'editor' => 1]) : null" />
+                            :link="$testRun ? route('test-run.survey', ['testRun' => $testRun->hash, 'editor' => 1]) : null"
+                            noWireNavigate />
 
                     </x-menu-sub>
 
@@ -68,23 +74,28 @@
                     <x-menu-sub title="Editor 2" icon="o-h2" open :disabled="$currentEditor !== 2">
 
                         <x-menu-item title="Aufgabe 1" :disabled="$currentEditor !== 2 || $currentStep < 1"
-                            :link="$testRun ? route('test-run', ['testRun' => $testRun->hash, 'editor' => 2, 'step' => 1]) : null" />
+                            :link="$testRun ? route('test-run', ['testRun' => $testRun->hash, 'editor' => 2, 'step' => 1]) : null"
+                            noWireNavigate />
 
                         <x-menu-item title="Aufgabe 2" :disabled="$currentEditor !== 2 || $currentStep < 2"
-                            :link="$testRun ? route('test-run', ['testRun' => $testRun->hash, 'editor' => 2, 'step' => 2]) : null" />
+                            :link="$testRun ? route('test-run', ['testRun' => $testRun->hash, 'editor' => 2, 'step' => 2]) : null"
+                            noWireNavigate />
 
                         <x-menu-item title="Aufgabe 3" :disabled="$currentEditor !== 2 || $currentStep < 3"
-                            :link="$testRun ? route('test-run', ['testRun' => $testRun->hash, 'editor' => 2, 'step' => 3]) : null" />
+                            :link="$testRun ? route('test-run', ['testRun' => $testRun->hash, 'editor' => 2, 'step' => 3]) : null"
+                            noWireNavigate />
 
                         <x-menu-item title="Aufgabe 4" :disabled="$currentEditor !== 2 || $currentStep < 4"
-                            :link="$testRun ? route('test-run', ['testRun' => $testRun->hash, 'editor' => 2, 'step' => 4]) : null" />
+                            :link="$testRun ? route('test-run', ['testRun' => $testRun->hash, 'editor' => 2, 'step' => 4]) : null"
+                            noWireNavigate />
 
                         <x-menu-item title="Aufgabe 5" :disabled="$currentEditor !== 2 || $currentStep < 5"
-                            :link="$testRun ? route('test-run', ['testRun' => $testRun->hash, 'editor' => 2, 'step' => 5]) : null" />
+                            :link="$testRun ? route('test-run', ['testRun' => $testRun->hash, 'editor' => 2, 'step' => 5]) : null"
+                            noWireNavigate />
 
                         <x-menu-item title="Befragung" :disabled="$currentEditor !== 2 || $currentStep !== 5" :link="$testRun
                             ? route('test-run.survey', ['testRun' => $testRun->hash, 'editor' => 2])
-                            : null" />
+                            : null" noWireNavigate />
 
                     </x-menu-sub>
 
@@ -93,8 +104,8 @@
                 <div class="flex-1"></div>
 
                 {{-- Hidden link to results --}}
-                <x-menu-item title="Auswertung" icon="o-presentation-chart-line" class="text-white"
-                    :link="route('results')" />
+                <x-menu-item title="Auswertung" icon="o-presentation-chart-line" class="text-white" :link="route('results')"
+                    noWireNavigate />
 
             </x-menu>
 

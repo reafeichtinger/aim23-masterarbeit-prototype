@@ -38,7 +38,7 @@ class Home extends Component
         if ($testRun = TestRun::where('id', Hashids::decode(Session::get('test-run.hash') ?? '')[0] ?? 0)->with('tasks')->first()) {
             $currentEditor = $testRun?->getNumberFromEditor($testRun->currentEditor);
             $currentStep = $testRun?->currentStep;
-            $this->redirectRoute('test-run', ['testRun' => $testRun->hash, 'editor' => $currentEditor, 'step' => $currentStep], navigate: true);
+            $this->redirectRoute('test-run', ['testRun' => $testRun->hash, 'editor' => $currentEditor, 'step' => $currentStep], navigate: false);
 
             return null;
         }
@@ -64,7 +64,7 @@ class Home extends Component
     public function resetTestRun(): void
     {
         Session::remove('test-run');
-        $this->redirect(route('home'), navigate: true);
+        $this->redirect(route('home'), navigate: false);
     }
 
     #endregion Actions
