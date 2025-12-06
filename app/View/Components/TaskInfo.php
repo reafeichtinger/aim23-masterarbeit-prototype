@@ -171,7 +171,8 @@ class TaskInfo extends Component
                                         Das Column hat einen Margin oben von 1cm und wird als vertikaler "flex" angezeigt mit einer "Gap" von 16px zwischen der Begrüßung, dem Inhalt und der Signatur.
                                     </li>
                                     <li>
-                                        Hier ist der Text zum Kopieren, die Variablen müssen manuell ersetzt werden:
+                                        Hier ist der Text zum Kopieren, die Variablen müssen manuell ersetzt werden. 
+                                        Einfügen ohne Formatierung über <x-kbd>STRG</x-kbd> + <x-kbd>SHIFT</x-kbd> + <x-kbd>V</x-kbd>
                                         <p class="text-base-content/50 mt-2">
                                             Hallo [[ globalData.recipient.data.name ]]!<br/><br/>
                                             Vielen Dank für Ihre Bestellung und Ihr Vertrauen. Bitte begleichen Sie den offenen Rechnungsbetrag bis [[ globalData.invoice.data.dueDate ]] auf das in der Fußzeile angegebene Konto.<br/><br/>
@@ -363,6 +364,7 @@ class TaskInfo extends Component
                                     </li>
                                     <li>
                                         Hier ist der Text zum Kopieren, die Variablen müssen manuell ersetzt werden:
+                                        Einfügen ohne Formatierung über <x-kbd>STRG</x-kbd> + <x-kbd>SHIFT</x-kbd> + <x-kbd>V</x-kbd>
                                         <p class="text-base-content/50 mt-2">
                                             Hallo [[ Kund:in Name ]]!<br/><br/>
                                             Vielen Dank für Ihre Bestellung und Ihr Vertrauen. Bitte begleichen Sie den offenen Rechnungsbetrag bis [[ Rechnungsfälligkeitsdatum ]] auf das in der Fußzeile angegebene Konto.<br/><br/>
