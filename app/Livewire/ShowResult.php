@@ -131,7 +131,7 @@ class ShowResult extends Component
             $output = str_replace('.png', '_diff.png', $input);
 
             // Run odiff command
-            $process = Process::fromShellCommandline("odiff \"$template\" \"$input\" \"$output\" --diff-mask --output-diff-lines --parsable-stdout --aa");
+            $process = Process::fromShellCommandline("odiff \"$template\" \"$input\" \"$output\" " . config('services.odiff.options'));
             $process->run();
 
             // Get results and persist them
