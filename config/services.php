@@ -14,10 +14,6 @@ return [
     |
     */
 
-    'odiff' => [
-        'options' => env('ODIFF_OPTIONS', '--diff-mask --output-diff-lines --parsable-stdout --aa'),
-    ],
-
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),
     ],

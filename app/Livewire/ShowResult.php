@@ -2,8 +2,7 @@
 
 namespace App\Livewire;
 
-use App\Actions\OdiffResult\SaveOdiffResultAction;
-use App\DTOs\OdiffResultData;
+use App\Actions\OdiffResult\GenerateOdiffResultsAction;
 use App\Enums\EditorEnum;
 use App\Models\OdiffResult;
 use App\Models\TestRun;
@@ -16,7 +15,6 @@ use Livewire\Attributes\Computed;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
-use Symfony\Component\Process\Process;
 use Vinkla\Hashids\Facades\Hashids;
 
 class ShowResult extends Component
@@ -32,6 +30,9 @@ class ShowResult extends Component
 
     #[Url(as: 'r', except: true)]
     public bool $showResults = true;
+
+    #[Url(as: 'd', except: '_diff')]
+    public string $odiffType = '_diff';
 
     public bool $showOdiff = false;
     public string $odiffEditor = 'ckeditor';
@@ -123,27 +124,7 @@ class ShowResult extends Component
         }
 
         // Create odiff results
-        foreach (EditorEnum::values() as $editor) {
-            // Prepare data
-            $input = "$basePath/$editor.png";
-            $filename = Str::afterLast($input, '/');
-            $template = public_path("img/$filename");
-            $output = str_replace('.png', '_diff.png', $input);
-
-            // Run odiff command
-            $process = Process::fromShellCommandline("odiff \"$template\" \"$input\" \"$output\" " . config('services.odiff.options'));
-            $process->run();
-
-            // Get results and persist them
-            $diff = explode(';', $process->getOutput());
-            SaveOdiffResultAction::handle(new OdiffResultData(
-                test_run: $this->testRun,
-                editor: str_contains($input, EditorEnum::CKEDITOR->value) ? EditorEnum::CKEDITOR : EditorEnum::GRAPESJS,
-                pixels: (int) ($diff[0] ?? 0),
-                percent: (float) ($diff[1] ?? 0.0),
-                lines: count(($diff[2] ?? null) ? explode(',', str_replace(PHP_EOL, '', ($diff[2] ?? ''))) : []),
-            ), $this->testRun->odiffResults->where('editor', $editor)->first());
-        }
+        GenerateOdiffResultsAction::handle($basePath, $this->testRun);
 
         // Generated results should now be available
         unset($this->testRun);
@@ -152,6 +133,30 @@ class ShowResult extends Component
 
             return;
         }
+    }
+
+    public function prevOdiff(): void
+    {
+        $this->odiffType = match ($this->odiffType) {
+            '_diff' => '_diff_switch_no_mask_no_aa',
+            '_diff_no_aa' => '_diff',
+            '_diff_no_mask' => '_diff_no_aa',
+            '_diff_no_mask_no_aa' => '_diff_no_mask',
+            '_diff_switch_no_mask' => '_diff_no_mask_no_aa',
+            '_diff_switch_no_mask_no_aa' => '_diff_switch_no_mask',
+        };
+    }
+
+    public function nextOdiff(): void
+    {
+        $this->odiffType = match ($this->odiffType) {
+            '_diff' => '_diff_no_aa',
+            '_diff_no_aa' => '_diff_no_mask',
+            '_diff_no_mask' => '_diff_no_mask_no_aa',
+            '_diff_no_mask_no_aa' => '_diff_switch_no_mask',
+            '_diff_switch_no_mask' => '_diff_switch_no_mask_no_aa',
+            '_diff_switch_no_mask_no_aa' => '_diff',
+        };
     }
 
     #endregion Actions

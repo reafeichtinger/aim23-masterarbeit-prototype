@@ -222,10 +222,17 @@
 
     {{-- Diff Image modal --}}
     <x-modal wire:model="showOdiff" title="Abweichung als Bild - {{ App\Enums\EditorEnum::parse($this->odiffEditor) }}"
-        class="backdrop-blur" box-class="min-w-[210mm]" persistent>
+        class="backdrop-blur" box-class="min-w-fit">
 
         @if ($this->currentDiff?->hasDiff)
-            <img src="{{ $this->currentDiff->img }}" />
+            <div class="relative">
+                <x-button icon="o-arrow-left" class="absolute left-4 top-1/2 btn-square btn-sm btn-neutral"
+                    wire:click="prevOdiff" />
+                <img src="{{ $this->currentDiff->img($this->odiffType) }}"
+                    class="min-w-2/3 border-(length:--border) border-neutral rounded-box" />
+                <x-button icon="o-arrow-right" class="absolute right-4 top-1/2 btn-square btn-sm btn-neutral"
+                    wire:click="nextOdiff" />
+            </div>
         @else
             <x-empty-state title="Keine Unterschiede gefunden"
                 subtitle="Dieses Dokument stimmt zu 100% mit der Vorgabe überein!" icon="o-pencil-square">

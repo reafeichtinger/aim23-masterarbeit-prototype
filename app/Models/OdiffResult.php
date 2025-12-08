@@ -33,11 +33,9 @@ class OdiffResult extends Model
         });
     }
 
-    public function img(): Attribute
+    public function img(string $type = '_diff'): string
     {
-        return Attribute::make(get: function (): string {
-            return asset("storage/results/{$this->testRun->hash}/{$this->editor->value}_diff.png");
-        });
+        return asset("storage/results/{$this->testRun->hash}/{$this->editor->value}{$type}.png");
     }
 
     #endregion Attributes
