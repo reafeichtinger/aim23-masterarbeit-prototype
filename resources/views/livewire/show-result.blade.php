@@ -81,6 +81,7 @@
 
                         @scope('cell_duration', $task)
                             {{ gmdate('H\h i\m s\s', $task->started_at?->diffInSeconds($task->completed_at)) }}
+                            ({{ round($task->started_at?->diffInSeconds($task->completed_at)) }} sek)
                         @endscope
 
 
@@ -114,6 +115,7 @@
 
                         @scope('cell_duration', $survey)
                             {{ gmdate('H\h i\m s\s', $survey->started_at?->diffInSeconds($survey->completed_at)) }}
+                            ({{ round($survey->started_at?->diffInSeconds($survey->completed_at)) }} sek)
                         @endscope
 
                         @scope('expansion', $survey)

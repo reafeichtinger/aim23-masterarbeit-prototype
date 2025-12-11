@@ -20,15 +20,22 @@
                     ]">
 
                     @scope('cell_started_at', $testRun)
-                        {{ App\Utils\DateX::formatDateTime($testRun->started_at, withSeconds: true) }}
+                        <span class="whitespace-nowrap">
+                            {{ App\Utils\DateX::formatDateTime($testRun->started_at, withSeconds: true) }}
+                        </span>
                     @endscope
 
                     @scope('cell_completed_at', $testRun)
-                        {{ App\Utils\DateX::formatDateTime($testRun->completed_at, withSeconds: true) }}
+                        <span class="whitespace-nowrap">
+                            {{ App\Utils\DateX::formatDateTime($testRun->completed_at, withSeconds: true) }}
+                        </span>
                     @endscope
 
                     @scope('cell_duration', $testRun)
-                        {{ gmdate('H\h i\m s\s', $testRun->started_at?->diffInSeconds($testRun->completed_at)) }}
+                        <span class="whitespace-nowrap">
+                            {{ gmdate('H\h i\m s\s', $testRun->started_at?->diffInSeconds($testRun->completed_at)) }}
+                            ({{ round($testRun->started_at?->diffInSeconds($testRun->completed_at)) }} sek)
+                        </span>
                     @endscope
 
                     @scope('actions', $testRun)
@@ -53,8 +60,12 @@
                             </a>
                         </div>
                     @endscope
-
                 </x-table>
+                <div
+                    class="w-full border-t-(length:--border) border-neutral text-right pr-8 py-1 text-base-content/50 font-medium bg-base-200">
+                    Gesamt:
+                    {{ $this->testRuns->count() }}
+                </div>
             </div>
         @else
             {{-- Password prompt --}}
